@@ -1,0 +1,4 @@
+arduino.menubar.device: Device
+arduino.menubar.device.connect: Connect
+arduino.menubar.device.disconnect: Disconnect
+arduino.menubar.device.sync: Sync blocks

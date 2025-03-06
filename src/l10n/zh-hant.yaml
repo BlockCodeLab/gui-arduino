@@ -1,0 +1,4 @@
+arduino.menubar.device: 設備
+arduino.menubar.device.connect: 連接
+arduino.menubar.device.disconnect: 斷開連接
+arduino.menubar.device.sync: 同步腳本

@@ -2,3 +2,72 @@ arduino.menubar.device: 设备
 arduino.menubar.device.connect: 连接
 arduino.menubar.device.disconnect: 断开连接
 arduino.menubar.device.sync: 同步脚本
+
+arduino.blocks.wait: 等待 %1 毫秒
+arduino.blocks.elseif: 否则，如果 %1 那么
+arduino.blocks.else: 否则
+arduino.blocks.runtime: 运行时长 %1
+arduino.blocks.runtimeMilliseconds: 毫秒
+arduino.blocks.runtimeSeconds: 秒
+arduino.blocks.data: 数据
+arduino.blocks.dataConvert: 将 %1 类型转为 %2
+arduino.blocks.dataLengthOf: "%1 长度"
+arduino.blocks.dataConstrain: 约束 %1 在 %2 和 %3 之间
+arduino.blocks.dataMap: 映射 %1 从 %2 - %3 到 %4 - %5
+arduino.blocks.whensetup: 当 Arduino 启动
+arduino.blocks.whenloop: 点 Arduino 循环运行
+arduino.blocks.whentimer: 当定时器每间隔 %1 毫秒
+arduino.blocks.timeron: 开启定时器
+arduino.blocks.timeroff: 关闭定时器
+arduino.blocks.operatorLarger: "%1 和 %2 之中最大"
+arduino.blocks.operatorSmaller: "%1 和 %2 之中最小"
+arduino.blocks.pin: 引脚
+arduino.blocks.setmode: 将引脚 %1 设为 %2 模式
+arduino.blocks.inputMode: 输入
+arduino.blocks.ouputMode: 输出
+arduino.blocks.inputPullUpMode: 上拉输入
+arduino.blocks.setdigital: 将数字引脚 %1 设为 %2
+arduino.blocks.digitalHigh: 高电平
+arduino.blocks.digitalLow: 低电平
+arduino.blocks.setanalog: 将模拟引脚 %1 设为 %2
+arduino.blocks.isDigitalHigh: 数字引脚 %1 是高电平？
+arduino.blocks.analogValue: 模拟引脚 %1
+arduino.blocks.attachinterrupt: 将引脚 %1 中断模式设为 %2
+arduino.blocks.interruptRising: 电平上升
+arduino.blocks.interruptFalling: 电平下降
+arduino.blocks.interruptChange: 电平改变
+arduino.blocks.interruptHigh: 高电平
+arduino.blocks.interruptLow: 低电平
+arduino.blocks.detachinterrupt: 取消引脚 %1 中断
+arduino.blocks.protocols: 通讯协议
+arduino.blocks.serial: 串口
+arduino.blocks.serialBaudrate: 将串口波特率设为 %1
+arduino.blocks.serialTimeout: 将串口超时设为 %1 毫秒
+arduino.blocks.serialPrint: 用 %2 模式打印 %1
+arduino.blocks.serialPrintWarp: 换行
+arduino.blocks.serialPrintNoWarp: 不换行
+arduino.blocks.serialPrintHEX: 16进制
+arduino.blocks.serialPrintNumber: 打印 %1
+arduino.blocks.serialAvailable: 存在可读取数据?
+arduino.blocks.serialAvailableLength: 可读取数据长度
+arduino.blocks.serialReadString: 读取文本
+arduino.blocks.serialReadStringUntil: 读取文本直到 %1
+arduino.blocks.serialReadParse: 读取 %1
+arduino.blocks.serialReadParseInteger: 整数
+arduino.blocks.serialReadParseFloat: 浮点数
+arduino.blocks.serialRead: 读取 1 个字节
+arduino.blocks.serialReadBytes: 读取 %1 个字节
+arduino.blocks.text: 文本
+arduino.blocks.textEquals: "%1 和 %2 相同（忽视大小写）？"
+arduino.blocks.textRemove: 删除 %3 从第 %1 个到第 %2 个字符
+arduino.blocks.textReplace: 将 %2 中的 %1 替换为 %3
+arduino.blocks.textReplaceLetter: 将 %2 中的第 %1 个字符替换为 %3
+arduino.blocks.textSubstring: 截取 %1 从第 %2 个到第 %3 个字符
+arduino.blocks.textWith: "%1 %2 %3?"
+arduino.blocks.textStartsWith: 开始于
+arduino.blocks.textEndsWith: 结束于
+arduino.blocks.textCase: 将 %1 字母转为 %2
+arduino.blocks.textLowerCase: 小写
+arduino.blocks.textUpperCase: 大写
+arduino.blocks.textTrim: 清除 %1 前后空白字符
+arduino.blocks.textConvert: 将 %1 文本转为 %2

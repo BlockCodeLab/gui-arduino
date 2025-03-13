@@ -1,17 +1,14 @@
 import './l10n';
 
 import { svgAsDataUri } from '@blockcode/utils';
-import { ScratchBlocks, MicroPythonGenerator, blocksTab, codeReviewTab } from '@blockcode/blocks';
+import { ScratchBlocks, blocksTab, codeReviewTab } from '@blockcode/blocks';
 
 import { Text } from '@blockcode/core';
-import { BlocksEditor, CodeReview } from '@blockcode/blocks';
+import { CodeReview } from '@blockcode/blocks';
+import { ArduinoBlocksEditor } from './components/blocks-editor/blocks-editor';
 import { DeviceIcon } from './components/device-menu/device-icon';
 import { DeviceMenu } from './components/device-menu/device-menu';
 import { defaultProject } from './lib/default-project';
-
-const generator = new MicroPythonGenerator();
-
-const handleExtensionsFilter = () => ['device'];
 
 export default {
   onNew() {
@@ -88,13 +85,7 @@ export default {
   tabs: [
     {
       ...blocksTab,
-      Content: () => (
-        <BlocksEditor
-          disableMonitor
-          generator={generator}
-          onExtensionsFilter={handleExtensionsFilter}
-        />
-      ),
+      Content: ArduinoBlocksEditor,
     },
     {
       ...codeReviewTab,

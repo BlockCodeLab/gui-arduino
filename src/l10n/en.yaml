@@ -2,3 +2,72 @@ arduino.menubar.device: Device
 arduino.menubar.device.connect: Connect
 arduino.menubar.device.disconnect: Disconnect
 arduino.menubar.device.sync: Sync blocks
+
+arduino.blocks.wait: wait %1 milliseconds
+arduino.blocks.elseif: else if %1 then
+arduino.blocks.else: else
+arduino.blocks.runtime: run time %1
+arduino.blocks.runtimeMilliseconds: milliseconds
+arduino.blocks.runtimeSeconds: seconds
+arduino.blocks.data: Data
+arduino.blocks.dataConvert: convert %1 to %2
+arduino.blocks.dataLengthOf: length of %1
+arduino.blocks.dataConstrain: constrain %1 between %2 to %3
+arduino.blocks.dataMap: map %1 from %2 - %3 to %4 - %5
+arduino.blocks.whensetup: when Arduino setup
+arduino.blocks.whenloop: when Arduino loop
+arduino.blocks.whentimer: when timer per %1 milliseconds
+arduino.blocks.timeron: start timer
+arduino.blocks.timeroff: stop timer
+arduino.blocks.operatorLarger: larger of %1 and %2
+arduino.blocks.operatorSmaller: smaller of %1 and %2
+arduino.blocks.pin: Pins
+arduino.blocks.setmode: set pin %1 mode to %2
+arduino.blocks.inputMode: input
+arduino.blocks.ouputMode: output
+arduino.blocks.inputPullUpMode: input pull-up
+arduino.blocks.setdigital: set digital pin %1 to %2
+arduino.blocks.digitalHigh: high
+arduino.blocks.digitalLow: low
+arduino.blocks.setanalog: set pwm pin %1 to %2
+arduino.blocks.isDigitalHigh: digital pin %1 is high?
+arduino.blocks.analogValue: analog pin %1
+arduino.blocks.attachinterrupt: attach pin %1 interrupt to %2
+arduino.blocks.interruptRising: rising
+arduino.blocks.interruptFalling: falling
+arduino.blocks.interruptChange: change
+arduino.blocks.interruptHigh: high
+arduino.blocks.interruptLow: low
+arduino.blocks.detachinterrupt: detach pin %1 interrupt
+arduino.blocks.protocols: Protocols
+arduino.blocks.serial: Serial
+arduino.blocks.serialBaudrate: set baudrate to %1
+arduino.blocks.serialTimeout: set timeout to %1 milliseconds
+arduino.blocks.serialPrint: print %1 with %2
+arduino.blocks.serialPrintWarp: warp
+arduino.blocks.serialPrintNoWarp: no-warp
+arduino.blocks.serialPrintHEX: hex
+arduino.blocks.serialPrintNumber: print %1
+arduino.blocks.serialAvailable: available data?
+arduino.blocks.serialAvailableLength: available data length
+arduino.blocks.serialReadString: read a string
+arduino.blocks.serialReadStringUntil: read a string until %1
+arduino.blocks.serialReadParse: read a %1 number
+arduino.blocks.serialReadParseInteger: int
+arduino.blocks.serialReadParseFloat: float
+arduino.blocks.serialRead: read a byte
+arduino.blocks.serialReadBytes: read %1 bytes
+arduino.blocks.text: Text
+arduino.blocks.textEquals: "%1 equals %2 (not case-sensitive)?"
+arduino.blocks.textRemove: remove letters from %1 to %2 of %3
+arduino.blocks.textReplace: replace %1 of %2 with %3
+arduino.blocks.textReplaceLetter: replace letter %1 of %2 with %3
+arduino.blocks.textSubstring: substring of %1 from %2 to %3
+arduino.blocks.textWith: "%1 %2 with %3?"
+arduino.blocks.textStartsWith: starts
+arduino.blocks.textEndsWith: ends
+arduino.blocks.textCase: get %1 of %2
+arduino.blocks.textLowerCase: lower-case
+arduino.blocks.textUpperCase: upper-case
+arduino.blocks.textTrim: remove %1 leading and trailing whitespace
+arduino.blocks.textConvert: convert %1 to %2

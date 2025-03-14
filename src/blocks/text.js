@@ -200,7 +200,7 @@ export default () => ({
         },
         STRING: {
           type: 'string',
-          defaultValue: ScratchBlocks.Msg.OPERATORS_JOIN_APPLE,
+          defaultValue: 'Abc',
         },
       },
     },
@@ -224,10 +224,22 @@ export default () => ({
       inputs: {
         STRING: {
           type: 'string',
-          defaultValue: ScratchBlocks.Msg.OPERATORS_JOIN_APPLE,
+          defaultValue: 'a',
         },
         TYPE: {
           menu: ['int', 'float', 'char array', 'byte array'],
+        },
+      },
+    },
+    {
+      // 转换为文本
+      id: 'convert_from',
+      text: translate('arduino.blocks.textConvertFrom', 'convert %1 to String'),
+      output: true,
+      inputs: {
+        NUM: {
+          type: 'number',
+          defaultValue: 1,
         },
       },
     },

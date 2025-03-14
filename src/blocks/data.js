@@ -16,7 +16,8 @@ export default () => ({
       output: true,
       inputs: {
         DATA: {
-          type: 'raw',
+          type: 'string',
+          defaultValue: '123',
         },
         TYPE: {
           menu: ['int', 'float', 'char', 'byte', 'String'],
@@ -31,7 +32,8 @@ export default () => ({
       output: 'number',
       inputs: {
         DATA: {
-          type: 'raw',
+          type: 'string',
+          defaultValue: 'abc',
         },
       },
     },

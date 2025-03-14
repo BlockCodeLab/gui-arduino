@@ -71,3 +71,4 @@ arduino.blocks.textLowerCase: lower-case
 arduino.blocks.textUpperCase: upper-case
 arduino.blocks.textTrim: remove %1 leading and trailing whitespace
 arduino.blocks.textConvert: convert %1 to %2
+arduino.blocks.textConvertFrom: convert %1 to String

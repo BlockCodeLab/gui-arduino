@@ -15,7 +15,7 @@ arduino.blocks.dataLengthOf: "%1 長度"
 arduino.blocks.dataConstrain: 約束 %1 在 %2 和 %3 之間
 arduino.blocks.dataMap: 映射 %1 從 %2 - %3 到 %4 - %5
 arduino.blocks.whensetup: 當 Arduino 啟動
-arduino.blocks.whenloop: 點 Arduino 循環運行
+arduino.blocks.whenloop: 當 Arduino 循環運行
 arduino.blocks.whentimer: 當定時器每間隔 %1 毫秒
 arduino.blocks.timeron: 開啟定時器
 arduino.blocks.timeroff: 關閉定時器
@@ -41,8 +41,8 @@ arduino.blocks.interruptLow: 低電平
 arduino.blocks.detachinterrupt: 取消引腳 %1 中斷
 arduino.blocks.protocols: 通訊協議
 arduino.blocks.serial: 串口
-arduino.blocks.serialBaudrate: 將串口波特率設為 %1
-arduino.blocks.serialTimeout: 將串口超時設為 %1 毫秒
+arduino.blocks.serialBaudrate: 將波特率設為 %1
+arduino.blocks.serialTimeout: 將超時設為 %1 毫秒
 arduino.blocks.serialPrint: 用 %2 模式打印 %1
 arduino.blocks.serialPrintWarp: 換行
 arduino.blocks.serialPrintNoWarp: 不換行
@@ -66,8 +66,9 @@ arduino.blocks.textSubstring: 截取 %1 從第 %2 個到第 %3 個字符
 arduino.blocks.textWith: "%1 %2 %3?"
 arduino.blocks.textStartsWith: 開始於
 arduino.blocks.textEndsWith: 結束於
-arduino.blocks.textCase: 將 %1 字母轉為 %2
+arduino.blocks.textCase: 將 %2 字母轉為 %1
 arduino.blocks.textLowerCase: 小寫
 arduino.blocks.textUpperCase: 大寫
 arduino.blocks.textTrim: 清除 %1 前後空白字符
-arduino.blocks.textConvert: 將 %1 文本轉為 %2
+arduino.blocks.textConvert: 將 %1 轉為 %2
+arduino.blocks.textConvertFrom: 將 %1 轉為文本

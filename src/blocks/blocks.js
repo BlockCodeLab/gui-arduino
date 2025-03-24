@@ -4,8 +4,9 @@ import getSerialBlocks from './serial';
 import getEventsBlocks from './events';
 import getControlBlocks from './control';
 import getProtocolsBlocks from './protocols';
-import getDataBlocks from './data';
 import getOperatorsBlocks from './operators';
+import getDataBlocks from './data';
+import getMyBlocks from './procedures';
 
 export { ArduinoGenerator } from './generator';
 
@@ -18,6 +19,7 @@ export function buildBlocks() {
   const protocolsBlocks = getProtocolsBlocks();
   const operatorsBlocks = getOperatorsBlocks();
   const dataBlocks = getDataBlocks();
+  const myBlocks = getMyBlocks();
 
   return [
     pinsBlocks,
@@ -28,5 +30,6 @@ export function buildBlocks() {
     protocolsBlocks,
     operatorsBlocks,
     dataBlocks,
+    myBlocks,
   ];
 }

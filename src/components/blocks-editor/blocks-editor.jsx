@@ -10,6 +10,7 @@ const handleExtensionsFilter = () => ['arduino'];
 export function ArduinoBlocksEditor() {
   return (
     <BlocksEditor
+      enableProcedureReturns
       disableSensingBlocks
       variableTypes={VARIABLE_TYPES}
       generator={generator}

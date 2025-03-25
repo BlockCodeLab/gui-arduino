@@ -1,10 +1,11 @@
 import './l10n';
 
 import { svgAsDataUri } from '@blockcode/utils';
-import { ScratchBlocks, blocksTab, codeReviewTab } from '@blockcode/blocks';
+import { ScratchBlocks, blocksTab } from '@blockcode/blocks';
+import { codeTab } from '@blockcode/code';
 
 import { Text } from '@blockcode/core';
-import { CodeReview } from '@blockcode/blocks';
+import { ArduinoCodeEditor } from './components/code-editor/code-editor';
 import { ArduinoBlocksEditor } from './components/blocks-editor/blocks-editor';
 import { DeviceIcon } from './components/device-menu/device-icon';
 import { DeviceMenu } from './components/device-menu/device-menu';
@@ -88,8 +89,8 @@ export default {
       Content: ArduinoBlocksEditor,
     },
     {
-      ...codeReviewTab,
-      Content: CodeReview,
+      ...codeTab,
+      Content: ArduinoCodeEditor,
     },
   ],
 };

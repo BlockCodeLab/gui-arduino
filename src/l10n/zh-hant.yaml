@@ -1,7 +1,4 @@
-arduino.menubar.device: 設備
-arduino.menubar.device.connect: 連接
-arduino.menubar.device.disconnect: 斷開連接
-arduino.menubar.device.sync: 同步腳本
+arduino.menubar.device: Arduino
 
 arduino.blocks.wait: 等待 %1 毫秒
 arduino.blocks.elseif: 否則，如果 %1 那麼

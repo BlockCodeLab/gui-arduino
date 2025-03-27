@@ -76,7 +76,7 @@ export default {
       label: (
         <Text
           id="arduino.menubar.device"
-          defaultMessage="Device"
+          defaultMessage="Arduino"
         />
       ),
       Menu: DeviceMenu,

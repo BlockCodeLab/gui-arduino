@@ -23,7 +23,7 @@ export default () => ({
         if (this.STATEMENT_PREFIX) {
           code += this.injectId(this.STATEMENT_PREFIX, block);
         }
-        const baud = this.getFieldValue('BAUDRATE') || '9600';
+        const baud = block.getFieldValue('BAUDRATE') || '9600';
         code += `Serial.begin(${baud});\n`;
         return code;
       }
@@ -71,7 +71,7 @@ export default () => ({
         if (this.STATEMENT_PREFIX) {
           code += this.injectId(this.STATEMENT_PREFIX, block);
         }
-        const mode = this.getFieldValue('MODE') || 'WARP';
+        const mode = block.getFieldValue('MODE') || 'WARP';
         const str = this.valueToCode(block, 'STRING', this.ORDER_NONE) || 'a';
         if (mode === 'WARP') {
           code += `Serial.println(${str});\n`;
@@ -187,7 +187,7 @@ export default () => ({
         if (this.STATEMENT_PREFIX) {
           code += this.injectId(this.STATEMENT_PREFIX, block);
         }
-        const type = this.getFieldValue('TYPE') || 'INT';
+        const type = block.getFieldValue('TYPE') || 'INT';
         if (type === 'INT') {
           code += `Serial.parseInt()\n`;  
         } else if (type === 'FLOAT') {

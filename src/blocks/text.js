@@ -285,7 +285,7 @@ export default () => ({
         }
         const str1 = this.valueToCode(block, 'STRING1', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_JOIN_APPLE;
         const str2 = this.valueToCode(block, 'STRING2', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_LETTEROF_APPLE;
-        const with_ = this.getFieldValue('WITH') || 'START';
+        const with_ = block.getFieldValue('WITH') || 'START';
         if (with_ === 'START') {
           code += `String(${str1}).startsWith(String(${str2}))\n`;
         } else {
@@ -316,7 +316,7 @@ export default () => ({
         if (this.STATEMENT_PREFIX) {
           code += this.injectId(this.STATEMENT_PREFIX, block);
         }
-        const with_ = this.getFieldValue('WITH') || 'LOWER';
+        const with_ = block.getFieldValue('WITH') || 'LOWER';
         const str = this.valueToCode(block, 'STRING', this.ORDER_NONE) || 'Abc';  
         code += `String(${str}).${with_}Case()\n`;  
         return code;
@@ -363,7 +363,7 @@ export default () => ({
           code += this.injectId(this.STATEMENT_PREFIX, block);
         }
         const str = this.valueToCode(block, 'STRING', this.ORDER_NONE) || 'a';
-        const type = this.getFieldValue('TYPE') || 'int';
+        const type = block.getFieldValue('TYPE') || 'int';
         if (type === 'int') {
           code += `String(${str}).toInt()\n`;
         } else if (type === 'float') {

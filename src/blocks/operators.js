@@ -37,7 +37,7 @@ export default () => ({
           code += this.injectId(this.STATEMENT_PREFIX, block);
         }
         const num1 = this.valueToCode(block, 'NUM1', this.ORDER_NONE) || 0;
-        const symbol = this.getFieldValue('SYMBOL') || '+';
+        const symbol = block.getFieldValue('SYMBOL') || '+';
         const num2 = this.valueToCode(block, 'NUM2', this.ORDER_NONE) || 0;
         code += `${num1} ${symbol} ${num2}`;
         return code;
@@ -102,7 +102,7 @@ export default () => ({
           code += this.injectId(this.STATEMENT_PREFIX, block);
         }
         const num1 = this.valueToCode(block, 'NUM1', this.ORDER_NONE) || 0;
-        const symbol = this.getFieldValue('SYMBOL') || '>';
+        const symbol = block.getFieldValue('SYMBOL') || '>';
         const num2 = this.valueToCode(block, 'NUM2', this.ORDER_NONE) || 0;
         code += `${num1} ${symbol} ${num2}`;
         return code;
@@ -208,7 +208,7 @@ export default () => ({
           code += this.injectId(this.STATEMENT_PREFIX, block);
         }
         const num1 = this.valueToCode(block, 'NUM1', this.ORDER_NONE) || 0;
-        const symbol = this.getFieldValue('SYMBOL') || '&';
+        const symbol = block.getFieldValue('SYMBOL') || '&';
         const num2 = this.valueToCode(block, 'NUM2', this.ORDER_NONE) || 0;
         code += `${num1} ${symbol} ${num2}`;
         return code;
@@ -370,7 +370,7 @@ export default () => ({
         if (this.STATEMENT_PREFIX) {
           code += this.injectId(this.STATEMENT_PREFIX, block);
         }
-        const operator = this.getFieldValue('OPERATOR') || 'abs';
+        const operator = block.getFieldValue('OPERATOR') || 'abs';
         const num = this.valueToCode(block, 'NUM', this.ORDER_NONE) || 0;
         if(operator === 'pow10'){
           code += `pow(10,${num})`;

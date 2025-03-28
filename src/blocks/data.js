@@ -29,7 +29,7 @@ export default () => ({
           code += this.injectId(this.STATEMENT_PREFIX, block);
         }
         const data = this.valueToCode(block, 'DATA', this.ORDER_NONE) || '0';
-        const type = this.getFieldValue('TYPE') || 'int';
+        const type = block.getFieldValue('TYPE') || 'int';
         switch (type) {
           case 'int':
             code += `String(${data}).toInt()`;

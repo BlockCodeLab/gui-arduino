@@ -226,7 +226,7 @@ export default () => ({
           code += this.injectId(this.STATEMENT_PREFIX, block);
         }
 
-        const unit = this.getFieldValue('UNIT');
+        const unit = block.getFieldValue('UNIT');
         code += `millis()${unit === 'SEC' ? '/1000' : ''}`;
         return code; 
       },

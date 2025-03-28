@@ -18,6 +18,15 @@ export default () => ({
           menu: ['4800', '9600', '38400', '57600', '115200'],
         },
       },
+      ino(block){
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const baud = this.getFieldValue('BAUDRATE') || '9600';
+        code += `Serial.begin(${baud});\n`;
+        return code;
+      }
     },
     {
       // 超时
@@ -29,6 +38,15 @@ export default () => ({
           defaultValue: 1000,
         },
       },
+      ino(block){
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const timeout = this.valueToCode(block, 'TIMEOUT', this.ORDER_NONE) || 1000;
+        code += `Serial.setTimeout(${timeout});\n`;
+        return code;
+      }
     },
     '---',
     {
@@ -48,6 +66,22 @@ export default () => ({
           ],
         },
       },
+      ino(block){
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const mode = this.getFieldValue('MODE') || 'WARP';
+        const str = this.valueToCode(block, 'STRING', this.ORDER_NONE) || 'a';
+        if (mode === 'WARP') {
+          code += `Serial.println(${str});\n`;
+        } else if (mode === 'NOWARP') {
+          code += `Serial.print(${str});\n`;
+        }else if (mode === 'HEX') {
+          code += `Serial.print(${str}, HEX);\n`;
+        }
+        return code;
+      }
     },
     {
       // 打印数字
@@ -59,6 +93,15 @@ export default () => ({
           defaultValue: 0,
         },
       },
+      ino(block){
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const num = this.valueToCode(block, 'NUM', this.ORDER_NONE) || 0;
+        code += `Serial.println(${num});\n`;
+        return code;
+      }
     },
     '---',
     {
@@ -66,12 +109,28 @@ export default () => ({
       id: 'available',
       text: translate('arduino.blocks.serialAvailable', 'available data?'),
       output: 'boolean',
+      ino(block){
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        code += `Serial.available() > 0\n`;
+        return code;
+      }
     },
     {
       // 接收到？
       id: 'available_length',
       text: translate('arduino.blocks.serialAvailableLength', 'available data length'),
       output: 'number',
+      ino(block){
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        code += `Serial.available()\n`;
+        return code;
+      }
     },
     '---',
     {
@@ -79,6 +138,14 @@ export default () => ({
       id: 'read_string',
       text: translate('arduino.blocks.serialReadString', 'read a string'),
       output: 'string',
+      ino(block){
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        code += `Serial.readString()\n`;
+        return code;
+      }
     },
     {
       // 读取文本直到
@@ -91,6 +158,15 @@ export default () => ({
           defaultValue: 'a',
         },
       },
+      ino(block){
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const char = this.valueToCode(block, 'CHAR', this.ORDER_NONE) || 'a';
+        code += `Serial.readStringUntil(${char})\n`;
+        return code;
+      }
     },
     '---',
     {
@@ -106,6 +182,19 @@ export default () => ({
           ],
         },
       },
+      ino(block){
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const type = this.getFieldValue('TYPE') || 'INT';
+        if (type === 'INT') {
+          code += `Serial.parseInt()\n`;  
+        } else if (type === 'FLOAT') {
+          code += `Serial.parseFloat()\n`;
+        } 
+        return code;
+      }
     },
     '---',
     {
@@ -113,6 +202,14 @@ export default () => ({
       id: 'read',
       text: translate('arduino.blocks.serialRead', 'read a byte'),
       output: true,
+      ino(block){
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        code += `Serial.readBytes(1)\n`;
+        return code;
+      }
     },
     {
       // 读取长度字节
@@ -125,6 +222,15 @@ export default () => ({
           defaultValue: 2,
         },
       },
+      ino(block){
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const len = this.valueToCode(block, 'LEN', this.ORDER_NONE) || 2;
+        code += `Serial.readBytes(${len})\n`;
+        return code;  
+      }
     },
   ],
 });

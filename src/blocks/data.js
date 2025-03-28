@@ -20,9 +20,29 @@ export default () => ({
           defaultValue: '123',
         },
         TYPE: {
-          menu: ['int', 'float', 'char', 'byte', 'String'],
+          menu: ['int', 'float', 'String'],
         },
       },
+      ino(block) {
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const data = this.valueToCode(block, 'DATA', this.ORDER_NONE) || '0';
+        const type = this.getFieldValue('TYPE') || 'int';
+        switch (type) {
+          case 'int':
+            code += `String(${data}).toInt()`;
+            break;
+          case 'float':
+            code += `String(${data}).toFloat()`;
+            break;
+          case 'String':
+            code += `String(${data})`;
+            break;
+        }
+        return code;
+      }
     },
     '---',
     {
@@ -36,6 +56,15 @@ export default () => ({
           defaultValue: 'abc',
         },
       },
+      ino(block) {
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const data = this.valueToCode(block, 'DATA', this.ORDER_NONE) || '0';
+        code += `strlen(${data})`;
+        return code;
+      }
     },
     '---',
     {
@@ -57,6 +86,17 @@ export default () => ({
           defaultValue: 255,
         },
       },
+      ino(block) {
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const data = this.valueToCode(block, 'DATA', this.ORDER_NONE) || '0';
+        const from = this.valueToCode(block, 'FROM', this.ORDER_NONE) || '0';
+        const to = this.valueToCode(block, 'TO', this.ORDER_NONE) || '0';
+        code += `constrain(${data}, ${from}, ${to})`;
+        return code;
+      }
     },
     {
       // 映射
@@ -85,6 +125,19 @@ export default () => ({
           defaultValue: 255,
         },
       },
+      ino(block) {
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const data = this.valueToCode(block, 'DATA', this.ORDER_NONE) || '0';
+        const fromlow = this.valueToCode(block, 'FROMLOW', this.ORDER_NONE) || '0';
+        const fromhigh = this.valueToCode(block, 'FROMHIGH', this.ORDER_NONE) || '0';
+        const tolow = this.valueToCode(block, 'TOLOW', this.ORDER_NONE) || '0';
+        const tohigh = this.valueToCode(block, 'TOHIGHT', this.ORDER_NONE) || '0';
+        code += `map(${data}, ${fromlow}, ${fromhigh}, ${tolow}, ${tohigh})`;
+        return code;
+      }
     },
   ],
 });

@@ -24,6 +24,16 @@ export default () => ({
           defaultValue: ScratchBlocks.Msg.OPERATORS_JOIN_BANANA,
         },
       },
+      ino(block){
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const str1 = this.valueToCode(block, 'STRING1', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_JOIN_APPLE;
+        const str2 = this.valueToCode(block, 'STRING2', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_JOIN_BANANA;
+        code += `String(${str1}) + String(${str2})\n`;
+        return code;
+      }
     },
     {
       // 字符
@@ -40,6 +50,16 @@ export default () => ({
           defaultValue: ScratchBlocks.Msg.OPERATORS_JOIN_APPLE,
         },
       },
+      ino(block){
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const letter = this.valueToCode(block, 'LETTER', this.ORDER_NONE) || 1;
+        const str = this.valueToCode(block, 'STRING', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_JOIN_APPLE;
+        code += `String(${str}).charAt(${letter} - 1)\n`;
+        return code;
+      }
     },
     {
       // 字符长度
@@ -52,6 +72,15 @@ export default () => ({
           defaultValue: ScratchBlocks.Msg.OPERATORS_JOIN_APPLE,
         },
       },
+      ino(block){
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const str = this.valueToCode(block, 'STRING', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_JOIN_APPLE;
+        code += `String(${str}).length()\n`;
+        return code;
+      }
     },
     {
       // 包含
@@ -68,6 +97,16 @@ export default () => ({
           defaultValue: ScratchBlocks.Msg.OPERATORS_LETTEROF_APPLE,
         },
       },
+      ino(block){
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const str1 = this.valueToCode(block, 'STRING1', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_JOIN_APPLE;
+        const str2 = this.valueToCode(block, 'STRING2', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_LETTEROF_APPLE;
+        code += `String(${str1}).indexOf(String(${str2})) != -1\n`;
+        return code;
+      }
     },
     {
       // 相同
@@ -84,6 +123,16 @@ export default () => ({
           defaultValue: ScratchBlocks.Msg.OPERATORS_JOIN_BANANA,
         },
       },
+      ino(block){
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const str1 = this.valueToCode(block, 'STRING1', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_JOIN_APPLE;
+        const str2 = this.valueToCode(block, 'STRING2', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_JOIN_BANANA;
+        code += `String(${str1}).equalsIgnoreCase(String(${str2}))\n`;
+        return code;
+      }
     },
     '---',
     {
@@ -104,6 +153,17 @@ export default () => ({
           defaultValue: ScratchBlocks.Msg.OPERATORS_JOIN_APPLE,
         },
       },
+      ino(block){
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const from = this.valueToCode(block, 'FROM', this.ORDER_NONE) || 1;
+        const to = this.valueToCode(block, 'TO', this.ORDER_NONE) || 2;
+        const str = this.valueToCode(block, 'STRING', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_JOIN_APPLE;
+        code += `String(${str}).substring(${from} - 1, ${to})\n`;
+        return code;
+      }
     },
     {
       // 替换
@@ -123,6 +183,17 @@ export default () => ({
           defaultValue: ScratchBlocks.Msg.OPERATORS_JOIN_BANANA[0],
         },
       },
+      ino(block){
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const str1 = this.valueToCode(block, 'STRING1', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_LETTEROF_APPLE; 
+        const str2 = this.valueToCode(block, 'STRING2', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_JOIN_APPLE;
+        const str3 = this.valueToCode(block, 'STRING3', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_JOIN_BANANA[0];
+        code += `String(${str2}).replace(String(${str1}), String(${str3}))\n`;
+        return code;
+      }
     },
     {
       // 替换字符
@@ -142,6 +213,17 @@ export default () => ({
           defaultValue: ScratchBlocks.Msg.OPERATORS_JOIN_BANANA[0],
         },
       },
+      ino(block){
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const index = this.valueToCode(block, 'INDEX', this.ORDER_NONE) || 1;
+        const str = this.valueToCode(block, 'STRING', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_JOIN_APPLE;
+        const letter = this.valueToCode(block, 'LETTER', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_JOIN_BANANA[0];
+        code += `String(${str}).setCharAt(${index} - 1, String(${letter}))\n`;
+        return code;
+      }
     },
     {
       // 截取
@@ -162,6 +244,17 @@ export default () => ({
           defaultValue: 2,
         },
       },
+      ino(block){
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const from = this.valueToCode(block, 'FROM', this.ORDER_NONE) || 1;
+        const to = this.valueToCode(block, 'TO', this.ORDER_NONE) || 2; 
+        const str = this.valueToCode(block, 'STRING', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_JOIN_APPLE;
+        code += `String(${str}).substring(${from} - 1, ${to})\n`;
+        return code;
+      }
     },
     {
       // 开始/结束于
@@ -185,6 +278,21 @@ export default () => ({
           defaultValue: ScratchBlocks.Msg.OPERATORS_LETTEROF_APPLE,
         },
       },
+      ino(block){
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const str1 = this.valueToCode(block, 'STRING1', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_JOIN_APPLE;
+        const str2 = this.valueToCode(block, 'STRING2', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_LETTEROF_APPLE;
+        const with_ = this.getFieldValue('WITH') || 'START';
+        if (with_ === 'START') {
+          code += `String(${str1}).startsWith(String(${str2}))\n`;
+        } else {
+          code += `String(${str1}).endsWith(String(${str2}))\n`;
+        }
+        return code;
+      }
     },
     '---',
     {
@@ -203,6 +311,16 @@ export default () => ({
           defaultValue: 'Abc',
         },
       },
+      ino(block){
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const with_ = this.getFieldValue('WITH') || 'LOWER';
+        const str = this.valueToCode(block, 'STRING', this.ORDER_NONE) || 'Abc';  
+        code += `String(${str}).${with_}Case()\n`;  
+        return code;
+      }
     },
     {
       // 清除空白
@@ -214,6 +332,15 @@ export default () => ({
           defaultValue: ScratchBlocks.Msg.OPERATORS_JOIN_APPLE,
         },
       },
+      ino(block){
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const str = this.valueToCode(block, 'STRING', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_JOIN_APPLE;
+        code += `String(${str}).trim()\n`;
+        return code;
+      }
     },
     '---',
     {
@@ -230,6 +357,24 @@ export default () => ({
           menu: ['int', 'float', 'char array', 'byte array'],
         },
       },
+      ino(block){
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const str = this.valueToCode(block, 'STRING', this.ORDER_NONE) || 'a';
+        const type = this.getFieldValue('TYPE') || 'int';
+        if (type === 'int') {
+          code += `String(${str}).toInt()\n`;
+        } else if (type === 'float') {
+          code += `String(${str}).toFloat()\n`;
+        } else if (type === 'char array') {
+          code += `String(${str}).toCharArray()\n`;
+        } else if (type === 'byte array') {
+          code += `String(${str}).getBytes()\n`;
+        } 
+        return code;
+      }
     },
     {
       // 转换为文本
@@ -242,6 +387,15 @@ export default () => ({
           defaultValue: 1,
         },
       },
+      ino(block){
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const num = this.valueToCode(block, 'NUM', this.ORDER_NONE) || 1;
+        code += `String(${num})\n`;
+        return code;
+      }
     },
   ],
 });

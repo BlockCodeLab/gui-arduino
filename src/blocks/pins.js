@@ -25,7 +25,16 @@ export default () => ({
           ],
         },
       },
-      ino(block) {},
+      ino(block) {
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const pin = this.getFieldValue('PIN') || 0;
+        const mode = this.getFieldValue('MODE') || 'INPUT';
+        code += `pinMode(${pin}, ${mode});\n`;
+        return code;
+      },
     },
     '---',
     {
@@ -46,7 +55,16 @@ export default () => ({
           ],
         },
       },
-      ino(block) {},
+      ino(block) {
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const pin = this.getFieldValue('PIN') || 0;
+        const value = this.getFieldValue('VALUE') || 0;
+        code += `digitalWrite(${pin}, ${value});\n`;
+        return code;
+      },
     },
     {
       // pwm引脚设为
@@ -61,7 +79,16 @@ export default () => ({
           defaultValue: 127,
         },
       },
-      ino(block) {},
+      ino(block) {
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const pin = this.getFieldValue('PIN') || 0;
+        const value = this.getFieldValue('VALUE') || 0;
+        code += `analogWrite(${pin}, ${value});\n`;
+        return code;
+      },
     },
     {
       // 数字引脚是否为高电平？
@@ -73,7 +100,15 @@ export default () => ({
           menu: 'PINS',
         },
       },
-      ino(block) {},
+      ino(block) {
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const pin = this.getFieldValue('PIN') || 0;
+        code += `digitalRead(${pin}) == HIGH\n`;
+        return code;
+      },
     },
     {
       // 模拟引脚值
@@ -85,7 +120,15 @@ export default () => ({
           menu: 'ANALOG_PINS',
         },
       },
-      ino(block) {},
+      ino(block) {
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const pin = this.getFieldValue('PIN') || 0;
+        code += `analogRead(${pin})\n`;
+        return code;
+      },
     },
     '---',
     {
@@ -102,12 +145,24 @@ export default () => ({
             [translate('arduino.blocks.interruptRising', 'rising'), 'RISING'],
             [translate('arduino.blocks.interruptFalling', 'falling'), 'FALLING'],
             [translate('arduino.blocks.interruptChange', 'change'), 'CHANGE'],
-            [translate('arduino.blocks.interruptHigh', 'high'), 'HIGH'],
+            //[translate('arduino.blocks.interruptHigh', 'high'), 'HIGH'],
             [translate('arduino.blocks.interruptLow', 'low'), 'LOW'],
           ],
         },
       },
-      ino(block) {},
+      ino(block) {
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const pin = this.getFieldValue('PIN') || 0;
+        const interrupt = this.getFieldValue('INTERRUPT') || 'RISING';
+        const branchCode = this.statementToCode(block, 'SUBSTACK') || '';
+
+        this.definitions_[`Func_declare_interrupt_${pin}_${interrupt}`] = `void ISR_${pin}_${interrupt}() {\n${branchCode}\n}`;
+        code += `attachInterrupt(digitalPinToInterrupt(${pin}), ISR_${pin}_${interrupt}, ${interrupt});\n`;
+        return code;
+      },
     },
     {
       // 解除中断
@@ -118,7 +173,15 @@ export default () => ({
           menu: 'PINS',
         },
       },
-      ino(block) {},
+      ino(block) {
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const pin = this.getFieldValue('PIN') || 0;
+        code += `detachInterrupt(digitalPinToInterrupt(${pin}));\n`;
+        return code;
+      },
     },
   ],
   menus: {

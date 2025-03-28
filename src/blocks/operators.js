@@ -20,10 +20,10 @@ export default () => ({
         },
         SYMBOL: {
           menu: [
-            ['+', 'ADD'],
-            ['-', 'SUB'],
-            ['×', 'MUL'],
-            ['÷', 'DIV'],
+            ['+', '+'],
+            ['-', '-'],
+            ['×', '*'],
+            ['÷', '/'],
           ],
         },
         NUM2: {
@@ -31,6 +31,17 @@ export default () => ({
           defaultValue: 0,
         },
       },
+      ino(block) {
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const num1 = this.valueToCode(block, 'NUM1', this.ORDER_NONE) || 0;
+        const symbol = this.getFieldValue('SYMBOL') || '+';
+        const num2 = this.valueToCode(block, 'NUM2', this.ORDER_NONE) || 0;
+        code += `${num1} ${symbol} ${num2}`;
+        return code;
+      }
     },
     '---',
     {
@@ -48,6 +59,16 @@ export default () => ({
           defaultValue: 10,
         },
       },
+      ino(block) {
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const from = this.valueToCode(block, 'FROM', this.ORDER_NONE) || 1;
+        const to = this.valueToCode(block, 'TO', this.ORDER_NONE) || 10;
+        code += `random(${from}, ${to})`;
+        return code;
+      }
     },
     '---',
     {
@@ -62,12 +83,12 @@ export default () => ({
         },
         SYMBOL: {
           menu: [
-            ['>', 'GT'],
-            ['<', 'LT'],
-            ['=', 'EQ'],
-            ['≥', 'GE'],
-            ['≤', 'LE'],
-            ['≠', 'NE'],
+            ['>', '>'],
+            ['<', '<'],
+            ['=', '='],
+            ['≥', '>='],
+            ['≤', '<='],
+            ['≠', '!='],
           ],
         },
         NUM2: {
@@ -75,6 +96,17 @@ export default () => ({
           defaultValue: 0,
         },
       },
+      ino(block) {
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const num1 = this.valueToCode(block, 'NUM1', this.ORDER_NONE) || 0;
+        const symbol = this.getFieldValue('SYMBOL') || '>';
+        const num2 = this.valueToCode(block, 'NUM2', this.ORDER_NONE) || 0;
+        code += `${num1} ${symbol} ${num2}`;
+        return code;
+      }
     },
     '---',
     {
@@ -90,6 +122,16 @@ export default () => ({
           type: 'boolean',
         },
       },
+      ino(block) {
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const operand1 = this.valueToCode(block, 'OPERAND1', this.ORDER_NONE) || false;
+        const operand2 = this.valueToCode(block, 'OPERAND2', this.ORDER_NONE) || false;
+        code += `${operand1} && ${operand2}`;
+        return code;
+      }
     },
     {
       // 或
@@ -104,6 +146,16 @@ export default () => ({
           type: 'boolean',
         },
       },
+      ino(block) {
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const operand1 = this.valueToCode(block, 'OPERAND1', this.ORDER_NONE) || false;
+        const operand2 = this.valueToCode(block, 'OPERAND2', this.ORDER_NONE) || false;
+        code += `${operand1} || ${operand2}`;
+        return code;
+      }
     },
     {
       // 非
@@ -115,6 +167,15 @@ export default () => ({
           type: 'boolean',
         },
       },
+      ino(block) {
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const operand = this.valueToCode(block, 'OPERAND', this.ORDER_NONE) || false;
+        code += `!${operand}`;
+        return code;
+      }
     },
     '---',
     {
@@ -129,11 +190,11 @@ export default () => ({
         },
         SYMBOL: {
           menu: [
-            ['&', 'AND'],
-            ['|', 'OR'],
-            ['^', 'XOR'],
-            ['<<', 'LEFT'],
-            ['>>', 'RIGHT'],
+            ['&', '&'],
+            ['|', '|'],
+            ['^', '^'],
+            ['<<', '<<'],
+            ['>>', '>>'],
           ],
         },
         NUM2: {
@@ -141,6 +202,17 @@ export default () => ({
           defaultValue: 0,
         },
       },
+      ino(block) {
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const num1 = this.valueToCode(block, 'NUM1', this.ORDER_NONE) || 0;
+        const symbol = this.getFieldValue('SYMBOL') || '&';
+        const num2 = this.valueToCode(block, 'NUM2', this.ORDER_NONE) || 0;
+        code += `${num1} ${symbol} ${num2}`;
+        return code;
+      }
     },
     {
       // 位运算非
@@ -153,6 +225,15 @@ export default () => ({
           defaultValue: 0,
         },
       },
+      ino(block) {
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const num = this.valueToCode(block, 'NUM', this.ORDER_NONE) || 0;
+        code += `~${num}`;
+        return code;
+      }
     },
     '---',
     {
@@ -170,6 +251,16 @@ export default () => ({
           defaultValue: 0,
         },
       },
+      ino(block) {
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const num1 = this.valueToCode(block, 'NUM1', this.ORDER_NONE) || 0;
+        const num2 = this.valueToCode(block, 'NUM2', this.ORDER_NONE) || 0; 
+        code += `max(${num1}, ${num2})`;
+        return code;
+      }
     },
     {
       // 最小值
@@ -186,6 +277,16 @@ export default () => ({
           defaultValue: 0,
         },
       },
+      ino(block) {
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const num1 = this.valueToCode(block, 'NUM1', this.ORDER_NONE) || 0;
+        const num2 = this.valueToCode(block, 'NUM2', this.ORDER_NONE) || 0;
+        code += `min(${num1}, ${num2})`;
+        return code;
+      }
     },
     {
       // 余数
@@ -202,6 +303,16 @@ export default () => ({
           defaultValue: 0,
         },
       },
+      ino(block) {
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const num1 = this.valueToCode(block, 'NUM1', this.ORDER_NONE) || 0; 
+        const num2 = this.valueToCode(block, 'NUM2', this.ORDER_NONE) || 0;
+        code += `${num1} % ${num2}`;
+        return code;
+      }
     },
     {
       // 四舍五入
@@ -214,6 +325,15 @@ export default () => ({
           defaultValue: 0,
         },
       },
+      ino(block) {
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const num = this.valueToCode(block, 'NUM', this.ORDER_NONE) || 0;
+        code += `round(${num})`;
+        return code;
+      }
     },
     '---',
     {
@@ -234,10 +354,10 @@ export default () => ({
             [ScratchBlocks.Msg.OPERATORS_MATHOP_ASIN, 'asin'],
             [ScratchBlocks.Msg.OPERATORS_MATHOP_ACOS, 'acos'],
             [ScratchBlocks.Msg.OPERATORS_MATHOP_ATAN, 'atan'],
-            [ScratchBlocks.Msg.OPERATORS_MATHOP_LN, 'ln'],
-            [ScratchBlocks.Msg.OPERATORS_MATHOP_LOG, 'log'],
-            [ScratchBlocks.Msg.OPERATORS_MATHOP_EEXP, 'e ^'],
-            [ScratchBlocks.Msg.OPERATORS_MATHOP_10EXP, '10 ^'],
+            [ScratchBlocks.Msg.OPERATORS_MATHOP_LN, 'log'],
+            [ScratchBlocks.Msg.OPERATORS_MATHOP_LOG, 'log10'],
+            [ScratchBlocks.Msg.OPERATORS_MATHOP_EEXP, 'exp'],
+            [ScratchBlocks.Msg.OPERATORS_MATHOP_10EXP, 'pow10'],
           ],
         },
         NUM: {
@@ -245,6 +365,20 @@ export default () => ({
           defaultValue: 0,
         },
       },
+      ino(block) {
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const operator = this.getFieldValue('OPERATOR') || 'abs';
+        const num = this.valueToCode(block, 'NUM', this.ORDER_NONE) || 0;
+        if(operator === 'pow10'){
+          code += `pow(10,${num})`;
+        }else{
+          code += `${operator}(${num})`;
+        }
+        return code;
+      }
     },
   ],
 });

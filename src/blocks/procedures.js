@@ -6,7 +6,13 @@ export default () => ({
   blocks: [
     {
       id: 'definition',
-      ino(block) {},
+      ino(block) {
+        const myBlock = block.childBlocks_[0];
+        let funcName = this.getVariableName(myBlock.getProcCode(), ScratchBlocks.Procedures.NAME_TYPE);
+        const args = myBlock.childBlocks_.map((argBlock) => this.getVariableName(argBlock.getFieldValue('VALUE')));
+        console.log(args);
+        console.log(funcName);
+      },
     },
     {
       id: 'call',

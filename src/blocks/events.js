@@ -13,14 +13,26 @@ export default () => ({
       id: 'whensetup',
       text: translate('arduino.blocks.whensetup', 'when Arduino setup'),
       hat: true,
-      ino(block) {},
+      ino(block) {
+        this.definitions_['include_arduino'] = `#include <Arduino.h>`;
+        var code = `void setup() {\n`;
+        code += `/* setupCode */`;
+        code += `}\n`;
+        return code;
+      },
     },
     {
       // loop 函数
       id: 'whenloop',
       text: translate('arduino.blocks.whenloop', 'when Arduino loop'),
       hat: true,
-      ino(block) {},
+      ino(block) {
+        this.definitions_['include_arduino'] = `#include <Arduino.h>`;
+        var code = `void loop() {\n`;
+        code += `/* loopCode */`;
+        code += `}\n`;
+        return code;
+      },
     },
     '---',
     {
@@ -34,19 +46,41 @@ export default () => ({
           defaultValue: 500,
         },
       },
-      ino(block) {},
+      ino(block) {
+        const delayMS = this.valueToCode(block, 'TIME', this.ORDER_NONE) || 500;
+        this.definitions_['Func_declare_timer'] = `#include <MsTimer2.h>`;
+        var code = `void msTimer2_func() {\n`;
+        code += `/* timerCode */`;
+        code += `}\n`;
+        this.setupAdd_ += `MsTimer2::set(${delayMS}, msTimer2_func);\n`;
+        return code;
+      },
     },
     {
       // 开启定时器
       id: 'timeron',
       text: translate('arduino.blocks.timeron', 'start timer'),
-      ino(block) {},
+      ino(block) {
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        code += `MsTimer2::start();\n`;
+        return code;
+      },
     },
     {
       // 关闭定时器
       id: 'timeroff',
       text: translate('arduino.blocks.timeroff', 'stop timer'),
-      ino(block) {},
+      ino(block) {
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        code += `MsTimer2::stop();\n`;
+        return code;
+      },
     },
   ],
 });

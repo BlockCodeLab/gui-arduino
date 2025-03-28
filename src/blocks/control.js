@@ -18,6 +18,15 @@ export default () => ({
           defaultValue: 500,
         },
       },
+      ino(block) {
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+        const delayMS = this.valueToCode(block, 'MS', this.ORDER_NONE) || 500;
+        code += `delay(${delayMS});\n`;
+        return code;
+      },
     },
     '---',
     {
@@ -31,6 +40,22 @@ export default () => ({
           defaultValue: 10,
         },
       },
+      ino(block) {
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+      
+        let branchCode = this.statementToCode(block, 'SUBSTACK') || '';
+        if (this.STATEMENT_SUFFIX) {
+          branchCode = this.prefixLines(this.injectId(this.STATEMENT_SUFFIX, block), this.INDENT) + branchCode;
+        }
+        const timesCode = this.valueToCode(block, 'TIMES', this.ORDER_NONE) || 0;
+        code += `for (int i = 0; i < ${timesCode}; i++) {\n`;
+        code += branchCode;
+        code += '}\n';
+        return code;
+      },
     },
     {
       // 无限重复
@@ -38,6 +63,20 @@ export default () => ({
       text: ScratchBlocks.Msg.CONTROL_FOREVER,
       repeat: true,
       end: true,
+      ino(block) {
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+      
+        let branchCode = this.statementToCode(block, 'SUBSTACK') || '';
+        if (this.STATEMENT_SUFFIX) {
+          branchCode = this.prefixLines(this.injectId(this.STATEMENT_SUFFIX, block), this.INDENT) + branchCode;
+        }
+      
+        code += `while (true) {\n${branchCode}}\n`;
+        return code;
+      }
     },
     '---',
     {
@@ -50,6 +89,22 @@ export default () => ({
           type: 'boolean',
         },
       },
+      ino(block) {
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+      
+        let branchCode = this.statementToCode(block, 'SUBSTACK') || '';
+        if (this.STATEMENT_SUFFIX) {
+          branchCode = this.prefixLines(this.injectId(this.STATEMENT_SUFFIX, block), this.INDENT) + branchCode;
+        }
+      
+        const conditionCode = this.valueToCode(block, 'CONDITION', this.ORDER_NONE) || 'false';
+        code += `if (${conditionCode}) {\n${branchCode}}\n`;
+      
+        return code;
+      }
     },
     {
       // 否则，如果
@@ -61,12 +116,42 @@ export default () => ({
           type: 'boolean',
         },
       },
+      ino(block) {
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+      
+        let branchCode = this.statementToCode(block, 'SUBSTACK') || '';
+        if (this.STATEMENT_SUFFIX) {
+          branchCode = this.prefixLines(this.injectId(this.STATEMENT_SUFFIX, block), this.INDENT) + branchCode;
+        }
+      
+        const conditionCode = this.valueToCode(block, 'CONDITION', this.ORDER_NONE) || 'false';
+        code += `else if (${conditionCode}) {\n${branchCode}}\n`;
+      
+        return code;
+      }
     },
     {
       // 否则
       id: 'else',
       text: translate('arduino.blocks.else', 'else'),
       substack: true,
+      ino(block) {
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+      
+        let branchCode = this.statementToCode(block, 'SUBSTACK') || '';
+        if (this.STATEMENT_SUFFIX) {
+          branchCode = this.prefixLines(this.injectId(this.STATEMENT_SUFFIX, block), this.INDENT) + branchCode;
+        }
+        code += `else {\n${branchCode}}\n`;
+      
+        return code;
+      }
     },
     '---',
     {
@@ -79,6 +164,21 @@ export default () => ({
           type: 'boolean',
         },
       },
+      ino(block) {
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+
+        let branchCode = this.statementToCode(block, 'SUBSTACK') || '';
+        if (this.STATEMENT_SUFFIX) {
+          branchCode = this.prefixLines(this.injectId(this.STATEMENT_SUFFIX, block), this.INDENT) + branchCode;
+        }
+        const conditionCode = this.valueToCode(block, 'CONDITION', this.ORDER_NONE) || 'true';
+
+        code += `while (!(${conditionCode})) {\n${branchCode}}\n`;
+        return code;
+      }
     },
     {
       // 当重复
@@ -90,6 +190,21 @@ export default () => ({
           type: 'boolean',
         },
       },
+      ino(block) {
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+
+        let branchCode = this.statementToCode(block, 'SUBSTACK') || '';
+        if (this.STATEMENT_SUFFIX) {
+          branchCode = this.prefixLines(this.injectId(this.STATEMENT_SUFFIX, block), this.INDENT) + branchCode;
+        }
+        const conditionCode = this.valueToCode(block, 'CONDITION', this.ORDER_NONE) || 'true';
+
+        code += `while ((${conditionCode})) {\n${branchCode}}\n`;
+        return code;
+      }
     },
     '---',
     {
@@ -105,7 +220,16 @@ export default () => ({
           ],
         },
       },
-      ino(block) {},
+      ino(block) {
+        let code = '';
+        if (this.STATEMENT_PREFIX) {
+          code += this.injectId(this.STATEMENT_PREFIX, block);
+        }
+
+        const unit = this.getFieldValue('UNIT');
+        code += `millis()${unit === 'SEC' ? '/1000' : ''}`;
+        return code; 
+      },
     },
   ],
 });

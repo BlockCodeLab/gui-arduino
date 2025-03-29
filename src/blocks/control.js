@@ -84,7 +84,7 @@ export default () => ({
         let code = '';
         code += `if (${condition}) {\n`;
         code += branchCode;
-        code + '}\n';
+        code += '}\n';
         return code;
       },
     },
@@ -106,7 +106,7 @@ export default () => ({
         let code = '';
         code += `else if (${condition}) {\n`;
         code += branchCode;
-        code + '}\n';
+        code += '}\n';
         return code;
       },
     },
@@ -122,7 +122,7 @@ export default () => ({
         let code = '';
         code += `else {\n`;
         code += branchCode;
-        code + '}\n';
+        code += '}\n';
         return code;
       },
     },

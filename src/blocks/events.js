@@ -14,11 +14,8 @@ export default () => ({
       text: translate('arduino.blocks.whensetup', 'when Arduino setup'),
       hat: true,
       ino(block) {
-        this.definitions_['include_arduino'] = `#include <Arduino.h>`;
-        var code = `void setup() {\n`;
-        code += `/* setupCode */`;
-        code += `}\n`;
-        return code;
+        const branchCode = this.statementToCode(block) || '';
+        this.setup_ += branchCode;
       },
     },
     {
@@ -27,11 +24,8 @@ export default () => ({
       text: translate('arduino.blocks.whenloop', 'when Arduino loop'),
       hat: true,
       ino(block) {
-        this.definitions_['include_arduino'] = `#include <Arduino.h>`;
-        var code = `void loop() {\n`;
-        code += `/* loopCode */`;
-        code += `}\n`;
-        return code;
+        const branchCode = this.statementToCode(block) || '';
+        this.loop_ += branchCode;
       },
     },
     '---',
@@ -47,13 +41,19 @@ export default () => ({
         },
       },
       ino(block) {
-        const delayMS = this.valueToCode(block, 'TIME', this.ORDER_NONE) || 500;
-        this.definitions_['Func_declare_timer'] = `#include <MsTimer2.h>`;
-        var code = `void msTimer2_func() {\n`;
-        code += `/* timerCode */`;
-        code += `}\n`;
-        this.setupAdd_ += `MsTimer2::set(${delayMS}, msTimer2_func);\n`;
-        return code;
+        this.definitions_['include_mstimer2'] = `#include <MsTimer2.h>`;
+
+        const delayMs = this.valueToCode(block, 'TIME', this.ORDER_NONE) || 500;
+        const funcName = `msTimer_${delayMs}`;
+
+        // 定义定时器回调函数
+        const branchCode = this.statementToCode(block) || '';
+        this.definitions_[`declare_${funcName}`] = `void ${funcName}();`;
+        this.definitions_[funcName] = `void ${funcName}() {\n${branchCode}}\n`;
+
+        // 将设置定时器放入setup最前面
+        const code = this.INDENT + `MsTimer2::set(${delayMs}, ${funcName});\n`;
+        this.setup_ = code + this.setup_;
       },
     },
     {
@@ -61,11 +61,8 @@ export default () => ({
       id: 'timeron',
       text: translate('arduino.blocks.timeron', 'start timer'),
       ino(block) {
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        code += `MsTimer2::start();\n`;
+        this.definitions_['include_mstimer2'] = `#include <MsTimer2.h>`;
+        const code = `MsTimer2::start();\n`;
         return code;
       },
     },
@@ -74,11 +71,8 @@ export default () => ({
       id: 'timeroff',
       text: translate('arduino.blocks.timeroff', 'stop timer'),
       ino(block) {
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        code += `MsTimer2::stop();\n`;
+        this.definitions_['include_mstimer2'] = `#include <MsTimer2.h>`;
+        const code = `MsTimer2::stop();\n`;
         return code;
       },
     },

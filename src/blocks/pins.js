@@ -26,13 +26,9 @@ export default () => ({
         },
       },
       ino(block) {
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
         const pin = block.getFieldValue('PIN') || 0;
         const mode = block.getFieldValue('MODE') || 'INPUT';
-        code += `pinMode(${pin}, ${mode});\n`;
+        const code = `pinMode(${pin}, ${mode});\n`;
         return code;
       },
     },
@@ -56,13 +52,9 @@ export default () => ({
         },
       },
       ino(block) {
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
         const pin = block.getFieldValue('PIN') || 0;
         const value = block.getFieldValue('VALUE') || 0;
-        code += `digitalWrite(${pin}, ${value});\n`;
+        const code = `digitalWrite(${pin}, ${value});\n`;
         return code;
       },
     },
@@ -80,13 +72,9 @@ export default () => ({
         },
       },
       ino(block) {
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
         const pin = block.getFieldValue('PIN') || 0;
-        const value = block.getFieldValue('VALUE') || 0;
-        code += `analogWrite(${pin}, ${value});\n`;
+        const value = this.valueToCode(block, 'VALUE', this.ORDER_NONE);
+        const code = `analogWrite(${pin}, ${value});\n`;
         return code;
       },
     },
@@ -101,12 +89,8 @@ export default () => ({
         },
       },
       ino(block) {
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
         const pin = block.getFieldValue('PIN') || 0;
-        code += `digitalRead(${pin}) == HIGH\n`;
+        const code = `digitalRead(${pin}) == HIGH\n`;
         return code;
       },
     },
@@ -121,12 +105,8 @@ export default () => ({
         },
       },
       ino(block) {
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
         const pin = block.getFieldValue('PIN') || 0;
-        code += `analogRead(${pin})\n`;
+        const code = `analogRead(${pin})\n`;
         return code;
       },
     },
@@ -151,16 +131,16 @@ export default () => ({
         },
       },
       ino(block) {
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
         const pin = block.getFieldValue('PIN') || 0;
         const interrupt = block.getFieldValue('INTERRUPT') || 'RISING';
-        const branchCode = this.statementToCode(block, 'SUBSTACK') || '';
+        const funcName = `interrupt_${pin}_${interrupt}`;
 
-        this.definitions_[`Func_declare_interrupt_${pin}_${interrupt}`] = `void ISR_${pin}_${interrupt}() {\n${branchCode}\n}`;
-        code += `attachInterrupt(digitalPinToInterrupt(${pin}), ISR_${pin}_${interrupt}, ${interrupt});\n`;
+        // 定义中断回调函数
+        const branchCode = this.statementToCode(block, 'SUBSTACK') || '';
+        this.definitions_[`declare_${funcName}`] = `void ${funcName}();`;
+        this.definitions_[funcName] = `void ${funcName}() {\n${branchCode}\n}`;
+
+        const code = `attachInterrupt(digitalPinToInterrupt(${pin}), ${funcName}, ${interrupt});\n`;
         return code;
       },
     },
@@ -174,12 +154,8 @@ export default () => ({
         },
       },
       ino(block) {
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
         const pin = block.getFieldValue('PIN') || 0;
-        code += `detachInterrupt(digitalPinToInterrupt(${pin}));\n`;
+        const code = `detachInterrupt(digitalPinToInterrupt(${pin}));\n`;
         return code;
       },
     },

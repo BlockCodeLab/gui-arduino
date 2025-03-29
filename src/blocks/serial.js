@@ -18,35 +18,27 @@ export default () => ({
           menu: ['4800', '9600', '38400', '57600', '115200'],
         },
       },
-      ino(block){
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
+      ino(block) {
         const baud = block.getFieldValue('BAUDRATE') || '9600';
-        code += `Serial.begin(${baud});\n`;
+        const code = `Serial.begin(${baud});\n`;
         return code;
-      }
+      },
     },
     {
       // 超时
       id: 'timeout',
-      text: translate('arduino.blocks.serialTimeout', 'set timeout to %1'),
+      text: translate('arduino.blocks.serialTimeout', 'set timeout to %1 milliseconds'),
       inputs: {
         TIMEOUT: {
           type: 'integer',
           defaultValue: 1000,
         },
       },
-      ino(block){
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        const timeout = this.valueToCode(block, 'TIMEOUT', this.ORDER_NONE) || 1000;
-        code += `Serial.setTimeout(${timeout});\n`;
+      ino(block) {
+        const timeout = this.valueToCode(block, 'TIMEOUT', this.ORDER_NONE);
+        const code = `Serial.setTimeout(${timeout});\n`;
         return code;
-      }
+      },
     },
     '---',
     {
@@ -66,22 +58,19 @@ export default () => ({
           ],
         },
       },
-      ino(block){
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
+      ino(block) {
+        const str = this.valueToCode(block, 'STRING', this.ORDER_NONE);
         const mode = block.getFieldValue('MODE') || 'WARP';
-        const str = this.valueToCode(block, 'STRING', this.ORDER_NONE) || 'a';
+        let code = 'Serial';
         if (mode === 'WARP') {
-          code += `Serial.println(${str});\n`;
+          code += `.println(${str});\n`;
         } else if (mode === 'NOWARP') {
-          code += `Serial.print(${str});\n`;
-        }else if (mode === 'HEX') {
-          code += `Serial.print(${str}, HEX);\n`;
+          code += `.print(${str});\n`;
+        } else if (mode === 'HEX') {
+          code += `.print(${str}, HEX);\n`;
         }
         return code;
-      }
+      },
     },
     {
       // 打印数字
@@ -93,15 +82,11 @@ export default () => ({
           defaultValue: 0,
         },
       },
-      ino(block){
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        const num = this.valueToCode(block, 'NUM', this.ORDER_NONE) || 0;
-        code += `Serial.println(${num});\n`;
+      ino(block) {
+        const num = this.valueToCode(block, 'NUM', this.ORDER_NONE);
+        const code = `Serial.println(${num});\n`;
         return code;
-      }
+      },
     },
     '---',
     {
@@ -109,28 +94,20 @@ export default () => ({
       id: 'available',
       text: translate('arduino.blocks.serialAvailable', 'available data?'),
       output: 'boolean',
-      ino(block){
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        code += `Serial.available() > 0\n`;
-        return code;
-      }
+      ino(block) {
+        const code = `(Serial.available() > 0)`;
+        return [code, this.ORDER_RELATIONAL];
+      },
     },
     {
       // 接收到？
       id: 'available_length',
       text: translate('arduino.blocks.serialAvailableLength', 'available data length'),
       output: 'number',
-      ino(block){
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        code += `Serial.available()\n`;
-        return code;
-      }
+      ino(block) {
+        const code = `Serial.available()`;
+        return [code, this.ORDER_FUNCTION_CALL];
+      },
     },
     '---',
     {
@@ -138,14 +115,10 @@ export default () => ({
       id: 'read_string',
       text: translate('arduino.blocks.serialReadString', 'read a string'),
       output: 'string',
-      ino(block){
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        code += `Serial.readString()\n`;
-        return code;
-      }
+      ino(block) {
+        const code = `Serial.readString()`;
+        return [code, this.ORDER_FUNCTION_CALL];
+      },
     },
     {
       // 读取文本直到
@@ -158,15 +131,11 @@ export default () => ({
           defaultValue: 'a',
         },
       },
-      ino(block){
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        const char = this.valueToCode(block, 'CHAR', this.ORDER_NONE) || 'a';
-        code += `Serial.readStringUntil(${char})\n`;
-        return code;
-      }
+      ino(block) {
+        const char = this.valueToCode(block, 'CHAR', this.ORDER_NONE);
+        const code = `Serial.readStringUntil(${char})`;
+        return [code, this.ORDER_FUNCTION_CALL];
+      },
     },
     '---',
     {
@@ -182,19 +151,16 @@ export default () => ({
           ],
         },
       },
-      ino(block){
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
+      ino(block) {
         const type = block.getFieldValue('TYPE') || 'INT';
+        let code = 'Serial';
         if (type === 'INT') {
-          code += `Serial.parseInt()\n`;  
+          code += '.parseInt()\n';
         } else if (type === 'FLOAT') {
-          code += `Serial.parseFloat()\n`;
-        } 
-        return code;
-      }
+          code += '.parseFloat()\n';
+        }
+        return [code, this.ORDER_FUNCTION_CALL];
+      },
     },
     '---',
     {
@@ -202,14 +168,10 @@ export default () => ({
       id: 'read',
       text: translate('arduino.blocks.serialRead', 'read a byte'),
       output: true,
-      ino(block){
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        code += `Serial.readBytes(1)\n`;
-        return code;
-      }
+      ino(block) {
+        const code = `Serial.readBytes(1)`;
+        return [code, this.ORDER_FUNCTION_CALL];
+      },
     },
     {
       // 读取长度字节
@@ -222,15 +184,11 @@ export default () => ({
           defaultValue: 2,
         },
       },
-      ino(block){
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        const len = this.valueToCode(block, 'LEN', this.ORDER_NONE) || 2;
-        code += `Serial.readBytes(${len})\n`;
-        return code;  
-      }
+      ino(block) {
+        const len = this.valueToCode(block, 'LEN', this.ORDER_NONE);
+        const code = `Serial.readBytes(${len})`;
+        return [code, this.ORDER_FUNCTION_CALL];
+      },
     },
   ],
 });

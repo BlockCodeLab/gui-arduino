@@ -24,16 +24,12 @@ export default () => ({
           defaultValue: ScratchBlocks.Msg.OPERATORS_JOIN_BANANA,
         },
       },
-      ino(block){
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        const str1 = this.valueToCode(block, 'STRING1', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_JOIN_APPLE;
-        const str2 = this.valueToCode(block, 'STRING2', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_JOIN_BANANA;
-        code += `String(${str1}) + String(${str2})\n`;
-        return code;
-      }
+      ino(block) {
+        const str1 = this.valueToCode(block, 'STRING1', this.ORDER_NONE);
+        const str2 = this.valueToCode(block, 'STRING2', this.ORDER_NONE);
+        const code = `(${str1} + ${str2})`;
+        return [code, this.ORDER_ADDITION];
+      },
     },
     {
       // 字符
@@ -50,16 +46,12 @@ export default () => ({
           defaultValue: ScratchBlocks.Msg.OPERATORS_JOIN_APPLE,
         },
       },
-      ino(block){
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        const letter = this.valueToCode(block, 'LETTER', this.ORDER_NONE) || 1;
-        const str = this.valueToCode(block, 'STRING', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_JOIN_APPLE;
-        code += `String(${str}).charAt(${letter} - 1)\n`;
-        return code;
-      }
+      ino(block) {
+        const letterIndex = this.getAdjusted(block, 'LETTER'); // 将位置值换成下标值
+        const str = this.valueToCode(block, 'STRING', this.ORDER_NONE);
+        const code = `${str}.charAt(${letterIndex})`;
+        return [code, this.ORDER_FUNCTION_CALL];
+      },
     },
     {
       // 字符长度
@@ -72,15 +64,11 @@ export default () => ({
           defaultValue: ScratchBlocks.Msg.OPERATORS_JOIN_APPLE,
         },
       },
-      ino(block){
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        const str = this.valueToCode(block, 'STRING', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_JOIN_APPLE;
-        code += `String(${str}).length()\n`;
-        return code;
-      }
+      ino(block) {
+        const str = this.valueToCode(block, 'STRING', this.ORDER_NONE);
+        code += `${str}.length()`;
+        return [code, this.ORDER_FUNCTION_CALL];
+      },
     },
     {
       // 包含
@@ -97,16 +85,12 @@ export default () => ({
           defaultValue: ScratchBlocks.Msg.OPERATORS_LETTEROF_APPLE,
         },
       },
-      ino(block){
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        const str1 = this.valueToCode(block, 'STRING1', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_JOIN_APPLE;
-        const str2 = this.valueToCode(block, 'STRING2', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_LETTEROF_APPLE;
-        code += `String(${str1}).indexOf(String(${str2})) != -1\n`;
-        return code;
-      }
+      ino(block) {
+        const str1 = this.valueToCode(block, 'STRING1', this.ORDER_NONE);
+        const str2 = this.valueToCode(block, 'STRING2', this.ORDER_NONE);
+        code += `(${str1}.indexOf(${str2}) != -1)`;
+        return [code, this.ORDER_EQUALITY];
+      },
     },
     {
       // 相同
@@ -123,16 +107,12 @@ export default () => ({
           defaultValue: ScratchBlocks.Msg.OPERATORS_JOIN_BANANA,
         },
       },
-      ino(block){
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        const str1 = this.valueToCode(block, 'STRING1', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_JOIN_APPLE;
-        const str2 = this.valueToCode(block, 'STRING2', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_JOIN_BANANA;
-        code += `String(${str1}).equalsIgnoreCase(String(${str2}))\n`;
-        return code;
-      }
+      ino(block) {
+        const str1 = this.valueToCode(block, 'STRING1', this.ORDER_NONE);
+        const str2 = this.valueToCode(block, 'STRING2', this.ORDER_NONE);
+        code += `${str1}.equalsIgnoreCase(${str2})\n`;
+        return [code, this.ORDER_EQUALITY];
+      },
     },
     '---',
     {
@@ -153,17 +133,13 @@ export default () => ({
           defaultValue: ScratchBlocks.Msg.OPERATORS_JOIN_APPLE,
         },
       },
-      ino(block){
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        const from = this.valueToCode(block, 'FROM', this.ORDER_NONE) || 1;
-        const to = this.valueToCode(block, 'TO', this.ORDER_NONE) || 2;
-        const str = this.valueToCode(block, 'STRING', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_JOIN_APPLE;
-        code += `String(${str}).substring(${from} - 1, ${to})\n`;
+      ino(block) {
+        const from = this.getAdjusted(block, 'FROM');
+        const to = this.valueToCode(block, 'TO', this.ORDER_NONE);
+        const str = this.valueToCode(block, 'STRING', this.ORDER_NONE);
+        const code = `${str}.remove(${from}, (${to} - ${from}));\n`;
         return code;
-      }
+      },
     },
     {
       // 替换
@@ -183,17 +159,13 @@ export default () => ({
           defaultValue: ScratchBlocks.Msg.OPERATORS_JOIN_BANANA[0],
         },
       },
-      ino(block){
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        const str1 = this.valueToCode(block, 'STRING1', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_LETTEROF_APPLE; 
-        const str2 = this.valueToCode(block, 'STRING2', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_JOIN_APPLE;
-        const str3 = this.valueToCode(block, 'STRING3', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_JOIN_BANANA[0];
-        code += `String(${str2}).replace(String(${str1}), String(${str3}))\n`;
+      ino(block) {
+        const str1 = this.valueToCode(block, 'STRING1', this.ORDER_NONE);
+        const str2 = this.valueToCode(block, 'STRING2', this.ORDER_NONE);
+        const str3 = this.valueToCode(block, 'STRING3', this.ORDER_NONE);
+        const code = `${str2}.replace(${str1}, ${str3});\n`;
         return code;
-      }
+      },
     },
     {
       // 替换字符
@@ -213,17 +185,13 @@ export default () => ({
           defaultValue: ScratchBlocks.Msg.OPERATORS_JOIN_BANANA[0],
         },
       },
-      ino(block){
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        const index = this.valueToCode(block, 'INDEX', this.ORDER_NONE) || 1;
-        const str = this.valueToCode(block, 'STRING', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_JOIN_APPLE;
-        const letter = this.valueToCode(block, 'LETTER', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_JOIN_BANANA[0];
-        code += `String(${str}).setCharAt(${index} - 1, String(${letter}))\n`;
+      ino(block) {
+        const index = this.getAdjusted(block, 'INDEX', this.ORDER_NONE);
+        const str = this.valueToCode(block, 'STRING', this.ORDER_NONE);
+        const letter = this.valueToCode(block, 'LETTER', this.ORDER_NONE);
+        const code = `${str}.setCharAt(${index}, ${letter})\n`;
         return code;
-      }
+      },
     },
     {
       // 截取
@@ -244,17 +212,13 @@ export default () => ({
           defaultValue: 2,
         },
       },
-      ino(block){
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        const from = this.valueToCode(block, 'FROM', this.ORDER_NONE) || 1;
-        const to = this.valueToCode(block, 'TO', this.ORDER_NONE) || 2; 
-        const str = this.valueToCode(block, 'STRING', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_JOIN_APPLE;
-        code += `String(${str}).substring(${from} - 1, ${to})\n`;
-        return code;
-      }
+      ino(block) {
+        const from = this.getAdjusted(block, 'FROM', this.ORDER_NONE);
+        const to = this.valueToCode(block, 'TO', this.ORDER_NONE);
+        const str = this.valueToCode(block, 'STRING', this.ORDER_NONE);
+        const code = `${str}.substring(${from}, ${to})`;
+        return [code, this.ORDER_FUNCTION_CALL];
+      },
     },
     {
       // 开始/结束于
@@ -278,21 +242,13 @@ export default () => ({
           defaultValue: ScratchBlocks.Msg.OPERATORS_LETTEROF_APPLE,
         },
       },
-      ino(block){
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        const str1 = this.valueToCode(block, 'STRING1', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_JOIN_APPLE;
-        const str2 = this.valueToCode(block, 'STRING2', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_LETTEROF_APPLE;
+      ino(block) {
+        const str1 = this.valueToCode(block, 'STRING1', this.ORDER_NONE);
+        const str2 = this.valueToCode(block, 'STRING2', this.ORDER_NONE);
         const with_ = block.getFieldValue('WITH') || 'START';
-        if (with_ === 'START') {
-          code += `String(${str1}).startsWith(String(${str2}))\n`;
-        } else {
-          code += `String(${str1}).endsWith(String(${str2}))\n`;
-        }
-        return code;
-      }
+        const code = `${str1}.${with_.toLowerCase()}sWith(${str2})`;
+        return [code, this.ORDER_FUNCTION_CALL];
+      },
     },
     '---',
     {
@@ -311,16 +267,12 @@ export default () => ({
           defaultValue: 'Abc',
         },
       },
-      ino(block){
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
+      ino(block) {
         const with_ = block.getFieldValue('WITH') || 'LOWER';
-        const str = this.valueToCode(block, 'STRING', this.ORDER_NONE) || 'Abc';  
-        code += `String(${str}).${with_}Case()\n`;  
+        const str = this.valueToCode(block, 'STRING', this.ORDER_NONE);
+        const code = `${str}.${with_.toLowerCase()}Case();\n`;
         return code;
-      }
+      },
     },
     {
       // 清除空白
@@ -332,15 +284,11 @@ export default () => ({
           defaultValue: ScratchBlocks.Msg.OPERATORS_JOIN_APPLE,
         },
       },
-      ino(block){
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        const str = this.valueToCode(block, 'STRING', this.ORDER_NONE) || ScratchBlocks.Msg.OPERATORS_JOIN_APPLE;
-        code += `String(${str}).trim()\n`;
+      ino(block) {
+        const str = this.valueToCode(block, 'STRING', this.ORDER_NONE);
+        const code = `${str}.trim();\n`;
         return code;
-      }
+      },
     },
     '---',
     {
@@ -357,24 +305,21 @@ export default () => ({
           menu: ['int', 'float', 'char array', 'byte array'],
         },
       },
-      ino(block){
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        const str = this.valueToCode(block, 'STRING', this.ORDER_NONE) || 'a';
+      ino(block) {
+        const str = this.valueToCode(block, 'STRING', this.ORDER_NONE);
         const type = block.getFieldValue('TYPE') || 'int';
+        let code = `String(${str})`;
         if (type === 'int') {
-          code += `String(${str}).toInt()\n`;
+          code += `.toInt()`;
         } else if (type === 'float') {
-          code += `String(${str}).toFloat()\n`;
+          code += `.toFloat()`;
         } else if (type === 'char array') {
-          code += `String(${str}).toCharArray()\n`;
+          code += `.toCharArray()`;
         } else if (type === 'byte array') {
-          code += `String(${str}).getBytes()\n`;
-        } 
-        return code;
-      }
+          code += `.getBytes()`;
+        }
+        return [code, this.ORDER_FUNCTION_CALL];
+      },
     },
     {
       // 转换为文本
@@ -387,15 +332,11 @@ export default () => ({
           defaultValue: 1,
         },
       },
-      ino(block){
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        const num = this.valueToCode(block, 'NUM', this.ORDER_NONE) || 1;
-        code += `String(${num})\n`;
-        return code;
-      }
+      ino(block) {
+        const num = this.valueToCode(block, 'NUM', this.ORDER_NONE);
+        const code = `String(${num})`;
+        return [code, this.ORDER_FUNCTION_CALL];
+      },
     },
   ],
 });

@@ -24,25 +24,21 @@ export default () => ({
         },
       },
       ino(block) {
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        const data = this.valueToCode(block, 'DATA', this.ORDER_NONE) || '0';
+        const data = this.valueToCode(block, 'DATA', this.ORDER_NONE);
         const type = block.getFieldValue('TYPE') || 'int';
+        let code = `String(${data})`;
         switch (type) {
           case 'int':
-            code += `String(${data}).toInt()`;
+            code += '.toInt()';
             break;
           case 'float':
-            code += `String(${data}).toFloat()`;
+            code += '.toFloat()';
             break;
           case 'String':
-            code += `String(${data})`;
             break;
         }
         return code;
-      }
+      },
     },
     '---',
     {
@@ -57,14 +53,10 @@ export default () => ({
         },
       },
       ino(block) {
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        const data = this.valueToCode(block, 'DATA', this.ORDER_NONE) || '0';
-        code += `strlen(${data})`;
+        const data = this.valueToCode(block, 'DATA', this.ORDER_NONE);
+        const code = `strlen(${data})`;
         return code;
-      }
+      },
     },
     '---',
     {
@@ -87,16 +79,12 @@ export default () => ({
         },
       },
       ino(block) {
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        const data = this.valueToCode(block, 'DATA', this.ORDER_NONE) || '0';
-        const from = this.valueToCode(block, 'FROM', this.ORDER_NONE) || '0';
-        const to = this.valueToCode(block, 'TO', this.ORDER_NONE) || '0';
-        code += `constrain(${data}, ${from}, ${to})`;
+        const data = this.valueToCode(block, 'DATA', this.ORDER_NONE);
+        const from = this.valueToCode(block, 'FROM', this.ORDER_NONE);
+        const to = this.valueToCode(block, 'TO', this.ORDER_NONE);
+        const code = `constrain(${data}, ${from}, ${to})`;
         return code;
-      }
+      },
     },
     {
       // 映射
@@ -126,18 +114,39 @@ export default () => ({
         },
       },
       ino(block) {
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        const data = this.valueToCode(block, 'DATA', this.ORDER_NONE) || '0';
-        const fromlow = this.valueToCode(block, 'FROMLOW', this.ORDER_NONE) || '0';
-        const fromhigh = this.valueToCode(block, 'FROMHIGH', this.ORDER_NONE) || '0';
-        const tolow = this.valueToCode(block, 'TOLOW', this.ORDER_NONE) || '0';
-        const tohigh = this.valueToCode(block, 'TOHIGHT', this.ORDER_NONE) || '0';
-        code += `map(${data}, ${fromlow}, ${fromhigh}, ${tolow}, ${tohigh})`;
+        const data = this.valueToCode(block, 'DATA', this.ORDER_NONE);
+        const fromlow = this.valueToCode(block, 'FROMLOW', this.ORDER_NONE);
+        const fromhigh = this.valueToCode(block, 'FROMHIGH', this.ORDER_NONE);
+        const tolow = this.valueToCode(block, 'TOLOW', this.ORDER_NONE);
+        const tohigh = this.valueToCode(block, 'TOHIGHT', this.ORDER_NONE);
+        const code = `map(${data}, ${fromlow}, ${fromhigh}, ${tolow}, ${tohigh})`;
         return code;
-      }
+      },
+    },
+    // 变量积木
+    {
+      // 声明变量
+      id: 'data_setvariableto',
+      ino(block) {},
+    },
+    {
+      // 设置变量
+      id: 'data_changevariableby',
+      ino(block) {},
+    },
+    {
+      // 声明数组
+      id: 'data_insertatlist',
+      ino(block) {},
+    },
+    {
+      // 设置数组项
+      id: 'data_replaceitemoflist',
+      ino(block) {},
+    },
+    {
+      // 获取数组项
+      id: 'data_itemoflist',
     },
   ],
 });

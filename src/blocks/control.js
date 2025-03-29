@@ -19,12 +19,8 @@ export default () => ({
         },
       },
       ino(block) {
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        const delayMS = this.valueToCode(block, 'MS', this.ORDER_NONE) || 500;
-        code += `delay(${delayMS});\n`;
+        const delayMs = this.valueToCode(block, 'MS', this.ORDER_NONE);
+        const code = `delay(${delayMs});\n`;
         return code;
       },
     },
@@ -41,17 +37,13 @@ export default () => ({
         },
       },
       ino(block) {
+        const times = this.valueToCode(block, 'TIMES', this.ORDER_NONE);
+
+        let branchCode = this.statementToCode(block, 'SUBSTACK');
+        branchCode = this.addLoopTrap(branchCode, block.id);
+
         let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-      
-        let branchCode = this.statementToCode(block, 'SUBSTACK') || '';
-        if (this.STATEMENT_SUFFIX) {
-          branchCode = this.prefixLines(this.injectId(this.STATEMENT_SUFFIX, block), this.INDENT) + branchCode;
-        }
-        const timesCode = this.valueToCode(block, 'TIMES', this.ORDER_NONE) || 0;
-        code += `for (int i = 0; i < ${timesCode}; i++) {\n`;
+        code += `for (int i = 0; i < ${times}; i++) {\n`;
         code += branchCode;
         code += '}\n';
         return code;
@@ -64,19 +56,15 @@ export default () => ({
       repeat: true,
       end: true,
       ino(block) {
+        let branchCode = this.statementToCode(block, 'SUBSTACK');
+        branchCode = this.addLoopTrap(branchCode, block.id);
+
         let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-      
-        let branchCode = this.statementToCode(block, 'SUBSTACK') || '';
-        if (this.STATEMENT_SUFFIX) {
-          branchCode = this.prefixLines(this.injectId(this.STATEMENT_SUFFIX, block), this.INDENT) + branchCode;
-        }
-      
-        code += `while (true) {\n${branchCode}}\n`;
+        code += 'while (true) {\n';
+        code += branchCode;
+        code += '}\n';
         return code;
-      }
+      },
     },
     '---',
     {
@@ -90,21 +78,15 @@ export default () => ({
         },
       },
       ino(block) {
+        const condition = this.valueToCode(block, 'CONDITION', this.ORDER_NONE) || 'false';
+        const branchCode = this.statementToCode(block, 'SUBSTACK');
+
         let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-      
-        let branchCode = this.statementToCode(block, 'SUBSTACK') || '';
-        if (this.STATEMENT_SUFFIX) {
-          branchCode = this.prefixLines(this.injectId(this.STATEMENT_SUFFIX, block), this.INDENT) + branchCode;
-        }
-      
-        const conditionCode = this.valueToCode(block, 'CONDITION', this.ORDER_NONE) || 'false';
-        code += `if (${conditionCode}) {\n${branchCode}}\n`;
-      
+        code += `if (${condition}) {\n`;
+        code += branchCode;
+        code + '}\n';
         return code;
-      }
+      },
     },
     {
       // 否则，如果
@@ -117,21 +99,16 @@ export default () => ({
         },
       },
       ino(block) {
+        const condition = this.valueToCode(block, 'CONDITION', this.ORDER_NONE) || 'false';
+        const branchCode = this.statementToCode(block, 'SUBSTACK');
+
+        // TODO: 处理 elseif 前面没有 if 的错误情况
         let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-      
-        let branchCode = this.statementToCode(block, 'SUBSTACK') || '';
-        if (this.STATEMENT_SUFFIX) {
-          branchCode = this.prefixLines(this.injectId(this.STATEMENT_SUFFIX, block), this.INDENT) + branchCode;
-        }
-      
-        const conditionCode = this.valueToCode(block, 'CONDITION', this.ORDER_NONE) || 'false';
-        code += `else if (${conditionCode}) {\n${branchCode}}\n`;
-      
+        code += `else if (${condition}) {\n`;
+        code += branchCode;
+        code + '}\n';
         return code;
-      }
+      },
     },
     {
       // 否则
@@ -139,19 +116,15 @@ export default () => ({
       text: translate('arduino.blocks.else', 'else'),
       substack: true,
       ino(block) {
+        const branchCode = this.statementToCode(block, 'SUBSTACK');
+
+        // TODO: 处理 else 前面没有 if 的错误情况
         let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-      
-        let branchCode = this.statementToCode(block, 'SUBSTACK') || '';
-        if (this.STATEMENT_SUFFIX) {
-          branchCode = this.prefixLines(this.injectId(this.STATEMENT_SUFFIX, block), this.INDENT) + branchCode;
-        }
-        code += `else {\n${branchCode}}\n`;
-      
+        code += `else {\n`;
+        code += branchCode;
+        code + '}\n';
         return code;
-      }
+      },
     },
     '---',
     {
@@ -165,20 +138,16 @@ export default () => ({
         },
       },
       ino(block) {
+        const condition = this.valueToCode(block, 'CONDITION', this.ORDER_NONE) || 'true';
+        let branchCode = this.statementToCode(block, 'SUBSTACK');
+        branchCode = this.addLoopTrap(branchCode, block.id);
+
         let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-
-        let branchCode = this.statementToCode(block, 'SUBSTACK') || '';
-        if (this.STATEMENT_SUFFIX) {
-          branchCode = this.prefixLines(this.injectId(this.STATEMENT_SUFFIX, block), this.INDENT) + branchCode;
-        }
-        const conditionCode = this.valueToCode(block, 'CONDITION', this.ORDER_NONE) || 'true';
-
-        code += `while (!(${conditionCode})) {\n${branchCode}}\n`;
+        code += `while (!(${condition})) {\n`;
+        code += branchCode;
+        code += '}\n';
         return code;
-      }
+      },
     },
     {
       // 当重复
@@ -191,20 +160,16 @@ export default () => ({
         },
       },
       ino(block) {
+        const condition = this.valueToCode(block, 'CONDITION', this.ORDER_NONE) || 'true';
+        let branchCode = this.statementToCode(block, 'SUBSTACK');
+        branchCode = this.addLoopTrap(branchCode, block.id);
+
         let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-
-        let branchCode = this.statementToCode(block, 'SUBSTACK') || '';
-        if (this.STATEMENT_SUFFIX) {
-          branchCode = this.prefixLines(this.injectId(this.STATEMENT_SUFFIX, block), this.INDENT) + branchCode;
-        }
-        const conditionCode = this.valueToCode(block, 'CONDITION', this.ORDER_NONE) || 'true';
-
-        code += `while ((${conditionCode})) {\n${branchCode}}\n`;
+        code += `while ((${condition})) {\n`;
+        code += branchCode;
+        code += '}\n';
         return code;
-      }
+      },
     },
     '---',
     {
@@ -221,14 +186,9 @@ export default () => ({
         },
       },
       ino(block) {
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-
         const unit = block.getFieldValue('UNIT');
-        code += `millis()${unit === 'SEC' ? '/1000' : ''}`;
-        return code; 
+        const code = `(millis()${unit === 'SEC' ? '/1000' : ''})`;
+        return code;
       },
     },
   ],

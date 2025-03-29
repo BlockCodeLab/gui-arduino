@@ -1,6 +1,5 @@
 import { translate, themeColors } from '@blockcode/core';
 import { ScratchBlocks } from '@blockcode/blocks';
-
 export default () => ({
   id: 'operator',
   name: '%{BKY_CATEGORY_OPERATORS}',
@@ -32,16 +31,19 @@ export default () => ({
         },
       },
       ino(block) {
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        const num1 = this.valueToCode(block, 'NUM1', this.ORDER_NONE) || 0;
+        const num1 = this.valueToCode(block, 'NUM1', this.ORDER_NONE);
+        const num2 = this.valueToCode(block, 'NUM2', this.ORDER_NONE);
         const symbol = block.getFieldValue('SYMBOL') || '+';
-        const num2 = this.valueToCode(block, 'NUM2', this.ORDER_NONE) || 0;
-        code += `${num1} ${symbol} ${num2}`;
-        return code;
-      }
+
+        const orders = {
+          '+': this.ORDER_ADDITION,
+          '-': this.ORDER_SUBTRACTION,
+          '*': this.ORDER_MULTIPLICATION,
+          '/': this.ORDER_DIVISION,
+        };
+        const code = `(${num1} ${symbol} ${num2})`;
+        return [code, orders[symbol]];
+      },
     },
     '---',
     {
@@ -60,15 +62,11 @@ export default () => ({
         },
       },
       ino(block) {
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        const from = this.valueToCode(block, 'FROM', this.ORDER_NONE) || 1;
-        const to = this.valueToCode(block, 'TO', this.ORDER_NONE) || 10;
-        code += `random(${from}, ${to})`;
-        return code;
-      }
+        const from = this.valueToCode(block, 'FROM', this.ORDER_NONE);
+        const to = this.valueToCode(block, 'TO', this.ORDER_NONE);
+        const code = `random(${from}, ${to})`;
+        return [code, this.ORDER_FUNCTION_CALL];
+      },
     },
     '---',
     {
@@ -85,7 +83,7 @@ export default () => ({
           menu: [
             ['>', '>'],
             ['<', '<'],
-            ['=', '='],
+            ['=', '=='],
             ['≥', '>='],
             ['≤', '<='],
             ['≠', '!='],
@@ -97,16 +95,21 @@ export default () => ({
         },
       },
       ino(block) {
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        const num1 = this.valueToCode(block, 'NUM1', this.ORDER_NONE) || 0;
+        const num1 = this.valueToCode(block, 'NUM1', this.ORDER_NONE);
+        const num2 = this.valueToCode(block, 'NUM2', this.ORDER_NONE);
         const symbol = block.getFieldValue('SYMBOL') || '>';
-        const num2 = this.valueToCode(block, 'NUM2', this.ORDER_NONE) || 0;
-        code += `${num1} ${symbol} ${num2}`;
-        return code;
-      }
+
+        const orders = {
+          '>': this.ORDER_RELATIONAL,
+          '<': this.ORDER_RELATIONAL,
+          '==': this.ORDER_EQUALITY,
+          '>=': this.ORDER_RELATIONAL,
+          '<=': this.ORDER_RELATIONAL,
+          '!=': this.ORDER_EQUALITY,
+        };
+        const code = `(${num1} ${symbol} ${num2})`;
+        return [code, orders[symbol]];
+      },
     },
     '---',
     {
@@ -123,15 +126,11 @@ export default () => ({
         },
       },
       ino(block) {
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        const operand1 = this.valueToCode(block, 'OPERAND1', this.ORDER_NONE) || false;
-        const operand2 = this.valueToCode(block, 'OPERAND2', this.ORDER_NONE) || false;
-        code += `${operand1} && ${operand2}`;
-        return code;
-      }
+        const operand1 = this.valueToCode(block, 'OPERAND1', this.ORDER_NONE);
+        const operand2 = this.valueToCode(block, 'OPERAND2', this.ORDER_NONE);
+        const code = `(${operand1} && ${operand2})`;
+        return [code, this.ORDER_LOGICAL_AND];
+      },
     },
     {
       // 或
@@ -147,15 +146,11 @@ export default () => ({
         },
       },
       ino(block) {
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        const operand1 = this.valueToCode(block, 'OPERAND1', this.ORDER_NONE) || false;
-        const operand2 = this.valueToCode(block, 'OPERAND2', this.ORDER_NONE) || false;
-        code += `${operand1} || ${operand2}`;
-        return code;
-      }
+        const operand1 = this.valueToCode(block, 'OPERAND1', this.ORDER_NONE);
+        const operand2 = this.valueToCode(block, 'OPERAND2', this.ORDER_NONE);
+        const code = `(${operand1} || ${operand2})`;
+        return [code, this.ORDER_LOGICAL_OR];
+      },
     },
     {
       // 非
@@ -168,14 +163,10 @@ export default () => ({
         },
       },
       ino(block) {
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        const operand = this.valueToCode(block, 'OPERAND', this.ORDER_NONE) || false;
-        code += `!${operand}`;
-        return code;
-      }
+        const operand = this.valueToCode(block, 'OPERAND', this.ORDER_NONE);
+        const code = `(!${operand})`;
+        return [code, this.ORDER_LOGICAL_NOT];
+      },
     },
     '---',
     {
@@ -203,16 +194,20 @@ export default () => ({
         },
       },
       ino(block) {
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        const num1 = this.valueToCode(block, 'NUM1', this.ORDER_NONE) || 0;
+        const num1 = this.valueToCode(block, 'NUM1', this.ORDER_NONE);
+        const num2 = this.valueToCode(block, 'NUM2', this.ORDER_NONE);
         const symbol = block.getFieldValue('SYMBOL') || '&';
-        const num2 = this.valueToCode(block, 'NUM2', this.ORDER_NONE) || 0;
-        code += `${num1} ${symbol} ${num2}`;
-        return code;
-      }
+
+        const orders = {
+          '&': this.ORDER_BITWISE_AND,
+          '|': this.ORDER_BITWISE_OR,
+          '^': this.ORDER_BITWISE_XOR,
+          '<<': this.ORDER_BITWISE_SHIFT,
+          '>>': this.ORDER_BITWISE_SHIFT,
+        };
+        const code = `(${num1} ${symbol} ${num2})`;
+        return [code, orders[symbol]];
+      },
     },
     {
       // 位运算非
@@ -226,14 +221,10 @@ export default () => ({
         },
       },
       ino(block) {
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        const num = this.valueToCode(block, 'NUM', this.ORDER_NONE) || 0;
-        code += `~${num}`;
-        return code;
-      }
+        const num = this.valueToCode(block, 'NUM', this.ORDER_NONE);
+        const code = `(~${num})`;
+        return [code, this.ORDER_BITWISE_NOT];
+      },
     },
     '---',
     {
@@ -252,15 +243,11 @@ export default () => ({
         },
       },
       ino(block) {
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        const num1 = this.valueToCode(block, 'NUM1', this.ORDER_NONE) || 0;
-        const num2 = this.valueToCode(block, 'NUM2', this.ORDER_NONE) || 0; 
-        code += `max(${num1}, ${num2})`;
-        return code;
-      }
+        const num1 = this.valueToCode(block, 'NUM1', this.ORDER_NONE);
+        const num2 = this.valueToCode(block, 'NUM2', this.ORDER_NONE);
+        const code = `max(${num1}, ${num2})`;
+        return [code, this.ORDER_FUNCTION_CALL];
+      },
     },
     {
       // 最小值
@@ -278,15 +265,11 @@ export default () => ({
         },
       },
       ino(block) {
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        const num1 = this.valueToCode(block, 'NUM1', this.ORDER_NONE) || 0;
-        const num2 = this.valueToCode(block, 'NUM2', this.ORDER_NONE) || 0;
-        code += `min(${num1}, ${num2})`;
-        return code;
-      }
+        const num1 = this.valueToCode(block, 'NUM1', this.ORDER_NONE);
+        const num2 = this.valueToCode(block, 'NUM2', this.ORDER_NONE);
+        const code = `min(${num1}, ${num2})`;
+        return [code, this.ORDER_FUNCTION_CALL];
+      },
     },
     {
       // 余数
@@ -304,15 +287,11 @@ export default () => ({
         },
       },
       ino(block) {
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        const num1 = this.valueToCode(block, 'NUM1', this.ORDER_NONE) || 0; 
-        const num2 = this.valueToCode(block, 'NUM2', this.ORDER_NONE) || 0;
-        code += `${num1} % ${num2}`;
-        return code;
-      }
+        const num1 = this.valueToCode(block, 'NUM1', this.ORDER_NONE);
+        const num2 = this.valueToCode(block, 'NUM2', this.ORDER_NONE);
+        const code = `(${num1} % ${num2})`;
+        return [code, this.ORDER_MODULUS];
+      },
     },
     {
       // 四舍五入
@@ -326,14 +305,10 @@ export default () => ({
         },
       },
       ino(block) {
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
-        const num = this.valueToCode(block, 'NUM', this.ORDER_NONE) || 0;
-        code += `round(${num})`;
-        return code;
-      }
+        const num = this.valueToCode(block, 'NUM', this.ORDER_NONE);
+        const code = `round(${num})`;
+        return [code, this.ORDER_FUNCTION_CALL];
+      },
     },
     '---',
     {
@@ -366,19 +341,17 @@ export default () => ({
         },
       },
       ino(block) {
-        let code = '';
-        if (this.STATEMENT_PREFIX) {
-          code += this.injectId(this.STATEMENT_PREFIX, block);
-        }
         const operator = block.getFieldValue('OPERATOR') || 'abs';
-        const num = this.valueToCode(block, 'NUM', this.ORDER_NONE) || 0;
-        if(operator === 'pow10'){
-          code += `pow(10,${num})`;
-        }else{
+        const num = this.valueToCode(block, 'NUM', this.ORDER_NONE);
+
+        let code = '';
+        if (operator === 'pow10') {
+          code += `pow(10, ${num})`;
+        } else {
           code += `${operator}(${num})`;
         }
-        return code;
-      }
+        return [code, this.ORDER_FUNCTION_CALL];
+      },
     },
   ],
 });

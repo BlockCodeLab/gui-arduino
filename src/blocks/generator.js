@@ -69,7 +69,7 @@ export class ArduinoGenerator extends ClangGenerator {
     delete this.functionNames_;
     delete this.setup_;
     delete this.loop_;
-    this.nameDB_.reset();
+    this.variableDB_.reset();
 
     return allDefs.replace(/\n\n+/g, '\n\n') + code + allFuncs.replace(/\n\n+/g, '\n\n');
   }

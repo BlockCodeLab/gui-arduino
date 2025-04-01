@@ -63,7 +63,7 @@ export class ArduinoGenerator extends ClangGenerator {
       '\n\n' +
       `void loop() {\n${this.loop_}}` + // loop
       '\n\n' +
-      func_definitions.join('\n');
+      func_definitions.join('\n\n');
 
     delete this.definitions_;
     delete this.functionNames_;

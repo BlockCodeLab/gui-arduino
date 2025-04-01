@@ -49,7 +49,7 @@ export default () => ({
         // 定义定时器回调函数
         const branchCode = this.statementToCode(block) || '';
         this.definitions_[`declare_${funcName}`] = `void ${funcName}();`;
-        this.definitions_[funcName] = `void ${funcName}() {\n${branchCode}}\n`;
+        this.definitions_[funcName] = `void ${funcName}() {\n${branchCode}}`;
 
         // 将设置定时器放入setup最前面
         const code = this.INDENT + `MsTimer2::set(${delayMs}, ${funcName});\n`;

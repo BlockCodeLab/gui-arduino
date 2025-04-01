@@ -138,7 +138,7 @@ export default () => ({
         // 定义中断回调函数
         const branchCode = this.statementToCode(block, 'SUBSTACK') || '';
         this.definitions_[`declare_${funcName}`] = `void ${funcName}();`;
-        this.definitions_[funcName] = `void ${funcName}() {\n${branchCode}\n}`;
+        this.definitions_[funcName] = `void ${funcName}() {\n${branchCode}}`;
 
         const code = `attachInterrupt(digitalPinToInterrupt(${pin}), ${funcName}, ${interrupt});\n`;
         return code;

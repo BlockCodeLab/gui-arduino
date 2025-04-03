@@ -19,12 +19,6 @@ export class ArduinoGenerator extends ClangGenerator {
 
     // 获取用户定义
     this.onDefinitions?.();
-
-    // 获取变量定义
-    if (this.onVariableDefinitions) {
-      delete this.definitions_['variables'];
-      this.onVariableDefinitions(workspace);
-    }
   }
 
   finish(code) {
@@ -71,6 +65,6 @@ export class ArduinoGenerator extends ClangGenerator {
     delete this.loop_;
     this.variableDB_.reset();
 
-    return allDefs.replace(/\n\n+/g, '\n\n') + code + allFuncs.replace(/\n\n+/g, '\n\n');
+    return allDefs.replace(/\n\n+/g, '\n\n') + '\n\n' + code + allFuncs.replace(/\n\n+/g, '\n\n');
   }
 }

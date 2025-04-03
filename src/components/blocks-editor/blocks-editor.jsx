@@ -1,7 +1,5 @@
 import { BlocksEditor } from '@blockcode/blocks';
-import { ArduinoGenerator, buildBlocks } from '../../blocks/blocks';
-
-const VARIABLE_TYPES = ['int', 'float', 'boolean', 'char', 'byte', 'String'];
+import { ArduinoGenerator, buildBlocks, VARIABLE_TYPES } from '../../blocks/blocks';
 
 const generator = new ArduinoGenerator();
 

@@ -10,6 +10,8 @@ import getMyBlocks from './procedures';
 
 export { ArduinoGenerator } from './generator';
 
+export { VARIABLE_TYPES } from './data';
+
 export function buildBlocks() {
   const pinsBlocks = getPinsBlocks();
   const textBlocks = getTextBlocks();

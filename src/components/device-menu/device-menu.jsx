@@ -10,6 +10,25 @@ const removeDownloading = () => {
   downloadAlertId = null;
 };
 
+const getHex = async (code, fqbn='arduino:avr:uno') => {
+  const params =  {
+        sketch: code,
+        fqbn: fqbn,
+        client: 'blockcode' //这行临时的，目前没有这个功能，可以去掉
+   }
+   const data = JSON.stringify({ json: JSON.stringify(params)})
+   const res = await fetch('https://maker.huiwancode.com/api_v1/getarduinocompile/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: data,
+    })
+    const resData = await res.json()
+    return resData?.data?.hex
+   
+}
+
 const downloadingAlert = () => {
   if (!downloadAlertId) {
     downloadAlertId = nanoid();

@@ -1,4 +1,6 @@
 arduino.menubar.device: Arduino
+arduino.menubar.device.uno: Arduino Uno
+arduino.menubar.device.nano: Arduino Nano
 
 arduino.blocks.wait: wait %1 milliseconds
 arduino.blocks.elseif: else if %1 then

@@ -1,4 +1,6 @@
 arduino.menubar.device: Arduino
+arduino.menubar.device.uno: Arduino Uno
+arduino.menubar.device.nano: Arduino Nano
 
 arduino.blocks.wait: 等待 %1 毫秒
 arduino.blocks.elseif: 否则，如果 %1 那么

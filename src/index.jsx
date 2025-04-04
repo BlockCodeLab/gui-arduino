@@ -4,10 +4,10 @@ import { svgAsDataUri } from '@blockcode/utils';
 import { ScratchBlocks, blocksTab } from '@blockcode/blocks';
 import { codeTab } from '@blockcode/code';
 
-import { Text } from '@blockcode/core';
 import { ArduinoCodeEditor } from './components/code-editor/code-editor';
 import { ArduinoBlocksEditor } from './components/blocks-editor/blocks-editor';
 import { DeviceIcon } from './components/device-menu/device-icon';
+import { DeviceLabel } from './components/device-menu/device-label';
 import { DeviceMenu } from './components/device-menu/device-menu';
 import { defaultProject } from './lib/default-project';
 
@@ -73,12 +73,7 @@ export default {
   menuItems: [
     {
       icon: <DeviceIcon />,
-      label: (
-        <Text
-          id="arduino.menubar.device"
-          defaultMessage="Arduino"
-        />
-      ),
+      label: <DeviceLabel />,
       Menu: DeviceMenu,
     },
   ],

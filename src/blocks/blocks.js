@@ -1,3 +1,5 @@
+import { ArduinoBoards } from '../lib/boards';
+
 import getPinsBlocks from './pins';
 import getTextBlocks from './text';
 import getSerialBlocks from './serial';
@@ -12,7 +14,7 @@ export { ArduinoGenerator } from './generator';
 
 export { VARIABLE_TYPES } from './data';
 
-export function buildBlocks() {
+export function buildBlocks(boardType) {
   const pinsBlocks = getPinsBlocks();
   const textBlocks = getTextBlocks();
   const serialBlocks = getSerialBlocks();

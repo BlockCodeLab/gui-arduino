@@ -1,7 +1,9 @@
-import { nanoid } from '@blockcode/utils';
+import { nanoid, classNames } from '@blockcode/utils';
 import { useProjectContext, setAlert, delAlert, openPromptModal } from '@blockcode/core';
 
 import { Spinner, Text, MenuSection, MenuItem } from '@blockcode/core';
+import { BoardsSection } from './boards-section';
+import styles from './device-menu.module.css';
 
 let downloadAlertId = null;
 
@@ -10,24 +12,23 @@ const removeDownloading = () => {
   downloadAlertId = null;
 };
 
-const getHex = async (code, fqbn='arduino:avr:uno') => {
-  const params =  {
-        sketch: code,
-        fqbn: fqbn,
-        client: 'blockcode' //这行临时的，目前没有这个功能，可以去掉
-   }
-   const data = JSON.stringify({ json: JSON.stringify(params)})
-   const res = await fetch('https://maker.huiwancode.com/api_v1/getarduinocompile/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: data,
-    })
-    const resData = await res.json()
-    return resData?.data?.hex
-   
-}
+const getHex = async (code, fqbn = 'arduino:avr:uno') => {
+  const params = {
+    sketch: code,
+    fqbn: fqbn,
+    client: 'blockcode', //这行临时的，目前没有这个功能，可以去掉
+  };
+  const data = JSON.stringify({ json: JSON.stringify(params) });
+  const res = await fetch('https://maker.huiwancode.com/api_v1/getarduinocompile/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: data,
+  });
+  const resData = await res.json();
+  return resData?.data?.hex;
+};
 
 const downloadingAlert = () => {
   if (!downloadAlertId) {
@@ -48,7 +49,7 @@ export function DeviceMenu({ itemClassName }) {
       <MenuSection>
         <MenuItem
           disabled={downloadAlertId}
-          className={itemClassName}
+          className={classNames(itemClassName, styles.blankCheckItem)}
           label={
             <Text
               id="gui.menubar.device.download"
@@ -60,6 +61,8 @@ export function DeviceMenu({ itemClassName }) {
           }}
         />
       </MenuSection>
+
+      <BoardsSection itemClassName={itemClassName} />
     </>
   );
 }

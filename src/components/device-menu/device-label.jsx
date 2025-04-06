@@ -6,6 +6,15 @@ import deviceIcon from './icon-device.png';
 export function DeviceLabel() {
   const { appState } = useAppContext();
 
+  if (appState.value?.boardType === ArduinoBoards.ArduinoUnoR4) {
+    return (
+      <Text
+        id="arduino.menubar.device.unoR4"
+        defaultMessage="Arduino Uno R4"
+      />
+    );
+  }
+
   if (appState.value?.boardType === ArduinoBoards.ArduinoNano) {
     return (
       <Text

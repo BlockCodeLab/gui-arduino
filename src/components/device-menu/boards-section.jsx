@@ -15,13 +15,19 @@ export function BoardsSection({ itemClassName }) {
     }
   }, []);
 
-  const chooseBoardHandler = useCallback((boardType) => () => {
-    setAppState({boardType});
-  }, [])
+  const chooseBoardHandler = useCallback(
+    (boardType) => () => {
+      setAppState({ boardType });
+    },
+    [],
+  );
 
   return (
     <MenuSection>
-      <MenuItem className={itemClassName} onClick={chooseBoardHandler(ArduinoBoards.ArduinoUno)}>
+      <MenuItem
+        className={itemClassName}
+        onClick={chooseBoardHandler(ArduinoBoards.ArduinoUno)}
+      >
         <img
           className={classNames(styles.checkIcon, {
             [styles.checked]: appState.value?.boardType === ArduinoBoards.ArduinoUno,
@@ -29,11 +35,29 @@ export function BoardsSection({ itemClassName }) {
           src={checkIcon}
         />
         <Text
-          id="arduino.menubar.deviceUno"
+          id="arduino.menubar.device.uno"
           defaultMessage="Arduino Uno"
         />
       </MenuItem>
-      <MenuItem className={itemClassName} onClick={chooseBoardHandler(ArduinoBoards.ArduinoNano)}>
+      <MenuItem
+        className={itemClassName}
+        onClick={chooseBoardHandler(ArduinoBoards.ArduinoUnoR4)}
+      >
+        <img
+          className={classNames(styles.checkIcon, {
+            [styles.checked]: appState.value?.boardType === ArduinoBoards.ArduinoUnoR4,
+          })}
+          src={checkIcon}
+        />
+        <Text
+          id="arduino.menubar.device.unoR4"
+          defaultMessage="Arduino Uno R4"
+        />
+      </MenuItem>
+      <MenuItem
+        className={itemClassName}
+        onClick={chooseBoardHandler(ArduinoBoards.ArduinoNano)}
+      >
         <img
           className={classNames(styles.checkIcon, {
             [styles.checked]: appState.value?.boardType === ArduinoBoards.ArduinoNano,
@@ -41,7 +65,7 @@ export function BoardsSection({ itemClassName }) {
           src={checkIcon}
         />
         <Text
-          id="arduino.menubar.deviceNano"
+          id="arduino.menubar.device.nano"
           defaultMessage="Arduino Nano"
         />
       </MenuItem>

@@ -1,5 +1,6 @@
 arduino.menubar.device: Arduino
 arduino.menubar.device.uno: Arduino Uno
+arduino.menubar.device.unoR4: Arduino Uno R4
 arduino.menubar.device.nano: Arduino Nano
 
 arduino.blocks.wait: 等待 %1 毫秒

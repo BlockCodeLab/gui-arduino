@@ -44,16 +44,16 @@ export default () => ({
         VALUE: {
           inputMode: true,
           type: 'number',
-          defaultValue: 1,
+          defaultValue: '1',
           menu: [
-            [translate('arduino.blocks.digitalHigh', 'high'), 1],
-            [translate('arduino.blocks.digitalLow', 'low'), 0],
+            [translate('arduino.blocks.digitalHigh', 'high'), '1'],
+            [translate('arduino.blocks.digitalLow', 'low'), '0'],
           ],
         },
       },
       ino(block) {
         const pin = block.getFieldValue('PIN') || 0;
-        const value = block.getFieldValue('VALUE') || 0;
+        const value = this.valueToCode(block, 'VALUE', this.ORDER_NONE);
         const code = `digitalWrite(${pin}, ${value});\n`;
         return code;
       },

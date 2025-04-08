@@ -3,7 +3,14 @@ arduino.menubar.device.uno: Arduino Uno
 arduino.menubar.device.unoR4: Arduino Uno R4
 arduino.menubar.device.nano: Arduino Nano
 
+arduino.menubar.device.download: Download program via Serial Port
+arduino.menubar.device.downloadBle: Download program via Bluetooth (BLE)
+
+arduino.blocks.displayMatrix: display %1
+arduino.blocks.clearDisplay: clear display
 arduino.blocks.wait: wait %1 milliseconds
+arduino.blocks.break: break
+arduino.blocks.continue: continue
 arduino.blocks.elseif: else if %1 then
 arduino.blocks.else: else
 arduino.blocks.runtime: run time %1

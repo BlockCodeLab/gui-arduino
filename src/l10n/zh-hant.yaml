@@ -3,7 +3,14 @@ arduino.menubar.device.uno: Arduino Uno
 arduino.menubar.device.unoR4: Arduino Uno R4
 arduino.menubar.device.nano: Arduino Nano
 
+arduino.menubar.device.download: 通過串口下載程式
+arduino.menubar.device.downloadBle: 通過藍牙（BLE）下載程式
+
+arduino.blocks.displayMatrix: 顯示圖示 %1
+arduino.blocks.clearDisplay: 清空畫面
 arduino.blocks.wait: 等待 %1 毫秒
+arduino.blocks.break: 跳出重複
+arduino.blocks.continue: 跳到下一次
 arduino.blocks.elseif: 否則，如果 %1 那麼
 arduino.blocks.else: 否則
 arduino.blocks.runtime: 運行時長 %1

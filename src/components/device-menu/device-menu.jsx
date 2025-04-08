@@ -1,11 +1,11 @@
 import { nanoid, classNames } from '@blockcode/utils';
 import { useProjectContext, setAlert, delAlert, openPromptModal } from '@blockcode/core';
+import { ASerialPort, BleSerialPort } from '@blockcode/board';
+import { compile } from '../../lib/compile';
 
 import { Spinner, Text, MenuSection, MenuItem } from '@blockcode/core';
 import { BoardsSection } from './boards-section';
 import styles from './device-menu.module.css';
-import { BleSerialPort } from '@blockcode/board';
-import { ASerialPort } from '@blockcode/board';
 
 let downloadAlertId = null;
 
@@ -41,29 +41,6 @@ const errorAlert = (err) => {
   setAlert('connectionError', 1000);
 };
 
-const parseHex = async (code, fqbn = 'arduino:avr:uno') => {
-  const params = {
-    sketch: code,
-    fqbn: fqbn,
-    client: 'blockcode', //这行临时的，目前没有这个功能，可以去掉
-  };
-  const data = JSON.stringify({ json: JSON.stringify(params) });
-  const res = await fetch('https://maker.huiwancode.com/api_v1/getarduinocompile/', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: data,
-  });
-  const resData = await res.json();
-  const base64Data = resData?.data?.hex;
-  if(base64Data){
-    return atob(base64Data);
-  }else{
-    return null;
-  }
-};
-
 export function DeviceMenu({ itemClassName }) {
   const { file } = useProjectContext();
 
@@ -75,8 +52,8 @@ export function DeviceMenu({ itemClassName }) {
           className={classNames(itemClassName, styles.blankCheckItem)}
           label={
             <Text
-              id="gui.menubar.device.ble_download"
-              defaultMessage="Download program by ble"
+              id="arduino.menubar.device.downloadBle"
+              defaultMessage="Download program via Bluetooth (BLE)"
             />
           }
           onClick={async () => {
@@ -84,7 +61,7 @@ export function DeviceMenu({ itemClassName }) {
             const options = {
               filters: [{ services: ['0000ffe0-0000-1000-8000-00805f9b34fb'] }],
             };
-            let gattServer
+            let gattServer;
             try {
               const device = await navigator.bluetooth.requestDevice(options);
               gattServer = await device.gatt.connect();
@@ -98,7 +75,7 @@ export function DeviceMenu({ itemClassName }) {
               const server = new BleSerialPort();
               server.init(gattServer);
               downloadingAlert(25);
-              const ret = await parseHex(file.value.content);
+              const ret = await compile(file.value.content);
               downloadingAlert(50);
               await server.flash(ret);
               downloadingAlert(100);
@@ -115,8 +92,8 @@ export function DeviceMenu({ itemClassName }) {
           className={classNames(itemClassName, styles.blankCheckItem)}
           label={
             <Text
-              id="gui.menubar.device.usb_download"
-              defaultMessage="Download program by usb"
+              id="arduino.menubar.device.download"
+              defaultMessage="Download program via Serial Port"
             />
           }
           onClick={async () => {
@@ -127,19 +104,18 @@ export function DeviceMenu({ itemClassName }) {
             let serialPort;
             try {
               serialPort = await navigator.serial.requestPort(options);
-              
             } catch (err) {
               console.log(err);
               errorAlert(err.name);
               return;
             }
-            downloadingAlert('0.0');
+            downloadingAlert(0);
             try {
               const server = new ASerialPort(serialPort);
-              server.open({baudRate: 57600})
+              server.open({ baudRate: 57600 });
               await new Promise((resolve) => setTimeout(resolve, 500));
               downloadingAlert(25);
-              const ret = await parseHex(file.value.content);
+              const ret = await compile(file.value.content);
               downloadingAlert(50);
               await server.flashFile(ret);
               downloadingAlert(100);

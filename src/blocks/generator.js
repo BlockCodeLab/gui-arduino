@@ -9,7 +9,7 @@ export class ArduinoGenerator extends ClangGenerator {
     super.init(workspace);
 
     // include 基础头文件
-    // this.definitions_['include_arduino'] = '#include <Arduino.h>';
+    this.definitions_['include_arduino'] = '#include <Arduino.h>';
 
     // 用于合并setup
     this.setup_ = '';

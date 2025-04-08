@@ -171,6 +171,28 @@ export default () => ({
         return code;
       },
     },
+    {
+      // continue
+      id: 'continue',
+      text: translate('arduino.blocks.continue', 'continue'),
+      end: true,
+      ino(block) {
+        let code = '';
+        code += 'continue;\n';
+        return code;
+      },
+    },
+    {
+      // break
+      id: 'break',
+      text: translate('arduino.blocks.break', 'break'),
+      end: true,
+      ino(block) {
+        let code = '';
+        code += 'break;\n';
+        return code;
+      },
+    },
     '---',
     {
       // 运行时长

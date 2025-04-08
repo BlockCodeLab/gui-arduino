@@ -1,7 +1,7 @@
 import { translate, themeColors } from '@blockcode/core';
-import { ScratchBlocks } from '@blockcode/blocks';
+import { ArduinoBoards } from '../lib/boards';
 
-export default () => ({
+export default (boardType) => ({
   id: 'pin',
   name: translate('arduino.blocks.pin', 'Pins'),
   themeColor: themeColors.blocks.motion.primary,
@@ -15,7 +15,7 @@ export default () => ({
       text: translate('arduino.blocks.setmode', 'set pin %1 mode to %2'),
       inputs: {
         PIN: {
-          menu: 'PINS',
+          menu: boardType === ArduinoBoards.ArduinoNano ? 'NANO_PINS' : 'UNO_PINS',
         },
         MODE: {
           menu: [
@@ -39,7 +39,7 @@ export default () => ({
       text: translate('arduino.blocks.setdigital', 'set digital pin %1 to %2'),
       inputs: {
         PIN: {
-          menu: 'PINS',
+          menu: boardType === ArduinoBoards.ArduinoNano ? 'NANO_PINS' : 'UNO_PINS',
         },
         VALUE: {
           inputMode: true,
@@ -59,12 +59,12 @@ export default () => ({
       },
     },
     {
-      // pwm引脚设为
+      // 模拟/PWM 引脚设为
       id: 'setanalog',
       text: translate('arduino.blocks.setanalog', 'set pwm pin %1 to %2'),
       inputs: {
         PIN: {
-          menu: 'PWM_PINS',
+          menu: boardType === ArduinoBoards.ArduinoNano ? 'R4_PWM_PINS' : 'PWM_PINS',
         },
         VALUE: {
           type: 'integer',
@@ -85,7 +85,7 @@ export default () => ({
       output: 'boolean',
       inputs: {
         PIN: {
-          menu: 'PINS',
+          menu: boardType === ArduinoBoards.ArduinoNano ? 'NANO_PINS' : 'UNO_PINS',
         },
       },
       ino(block) {
@@ -101,7 +101,7 @@ export default () => ({
       output: 'number',
       inputs: {
         PIN: {
-          menu: 'ANALOG_PINS',
+          menu: boardType === ArduinoBoards.ArduinoNano ? 'NANO_ANALOG_PINS' : 'UNO_ANALOG_PINS',
         },
       },
       ino(block) {
@@ -118,7 +118,7 @@ export default () => ({
       substack: true,
       inputs: {
         PIN: {
-          menu: 'PINS',
+          menu: boardType === ArduinoBoards.ArduinoNano ? 'NANO_PINS' : 'UNO_PINS',
         },
         INTERRUPT: {
           menu: [
@@ -150,7 +150,7 @@ export default () => ({
       text: translate('arduino.blocks.detachinterrupt', 'detach pin %1 interrupt'),
       inputs: {
         PIN: {
-          menu: 'PINS',
+          menu: boardType === ArduinoBoards.ArduinoNano ? 'NANO_PINS' : 'UNO_PINS',
         },
       },
       ino(block) {
@@ -159,10 +159,88 @@ export default () => ({
         return code;
       },
     },
+    '---',
+    {
+      // 设置R4的点阵灯
+      id: 'setMatrix',
+      hidden: boardType !== ArduinoBoards.ArduinoUnoR4,
+      text: translate('arduino.blocks.displayMatrix', 'display [MATRIX]'),
+      inputs: {
+        MATRIX: {
+          shadow: 'matrixR4',
+        },
+      },
+      ino(block) {
+        // 引入点整灯头文件并创建全局变量
+        this.definitions_['include_Arduino_LED_Matrix'] = '#include "Arduino_LED_Matrix.h"';
+        this.definitions_['variable_matrix'] = 'ArduinoLEDMatrix _matrix;';
+        this.definitions_['variable_matrix_frame'] = 'uint32_t _MATRIX_FRAME_[] = {0x0,0x0,0x0};';
+
+        // 在setup函数中加入matrix的初始化
+        if (!this.setup_.includes('_matrix.begin();')) {
+          this.setup_ += this.INDENT + '_matrix.begin();\n';
+        }
+
+        const matrix = this.valueToCode(block, 'MATRIX', this.ORDER_NONE).split(',');
+        let code = '';
+        code += `_MATRIX_FRAME_[0] = 0x${matrix[0]};\n`;
+        code += `_MATRIX_FRAME_[1] = 0x${matrix[1]};\n`;
+        code += `_MATRIX_FRAME_[2] = 0x${matrix[2]};\n`;
+        code += '_matrix.loadFrame(_MATRIX_FRAME_);\n';
+        return code;
+      },
+    },
+    {
+      // 设置R4的点阵灯
+      id: 'clearMatrix',
+      hidden: boardType !== ArduinoBoards.ArduinoUnoR4,
+      text: translate('arduino.blocks.clearDisplay', 'clear display'),
+      ino(block) {
+        // 引入点整灯头文件并创建全局变量
+        this.definitions_['include_Arduino_LED_Matrix'] = '#include "Arduino_LED_Matrix.h"';
+        this.definitions_['variable_matrix'] = 'ArduinoLEDMatrix _matrix;';
+        this.definitions_['variable_matrix_frame'] = 'uint32_t _MATRIX_FRAME_[] = {0x0,0x0,0x0}';
+
+        // 在setup函数中加入matrix的初始化
+        if (!this.setup_.includes('_matrix.begin();\n')) {
+          this.setup_ += this.INDENT + '_matrix.begin();\n';
+        }
+
+        let code = '';
+        code += '_MATRIX_FRAME_[0] = 0x0;\n';
+        code += '_MATRIX_FRAME_[1] = 0x0;\n';
+        code += '_MATRIX_FRAME_[2] = 0x0;\n';
+        code += '_matrix.loadFrame(_MATRIX_FRAME_);\n';
+        return code;
+      },
+    },
+    {
+      // 8x12点阵灯
+      id: 'matrixR4',
+      inline: true,
+      output: 'string',
+      inputs: {
+        MATRIX: {
+          type: 'matrix',
+          width: 12,
+          height: 8,
+        },
+      },
+      ino(block) {
+        const matrix = block.getFieldValue('MATRIX');
+        const frame = [];
+        for (let i = 0; i < 3; i++) {
+          const bin = matrix.slice(i * 32, (i + 1) * 32);
+          const hex = parseInt(bin, 2).toString(16);
+          frame.push(hex);
+        }
+        return [frame.join(','), this.ORDER_ATOMIC];
+      },
+    },
   ],
   menus: {
-    PINS: {
-      // 所有引脚
+    UNO_PINS: {
+      // Arduino Uno R3/R4 所有引脚
       items: [
         ['0', '0'],
         ['1', '1'],
@@ -186,8 +264,35 @@ export default () => ({
         ['A5', 'A5'],
       ],
     },
+    NANO_PINS: {
+      // Arduino Nano 所有引脚
+      items: [
+        ['0', '0'],
+        ['1', '1'],
+        ['2', '2'],
+        ['3', '3'],
+        ['4', '4'],
+        ['5', '5'],
+        ['6', '6'],
+        ['7', '7'],
+        ['8', '8'],
+        ['9', '9'],
+        ['10', '10'],
+        ['11', '11'],
+        ['12', '12'],
+        ['13', '13'],
+        ['A0', 'A0'],
+        ['A1', 'A1'],
+        ['A2', 'A2'],
+        ['A3', 'A3'],
+        ['A4', 'A4'],
+        ['A5', 'A5'],
+        ['A6', 'A6'],
+        ['A7', 'A7'],
+      ],
+    },
     PWM_PINS: {
-      // 模拟写引脚
+      // Arduino UNO/Nano PWM 写引脚
       items: [
         ['3', '3'],
         ['5', '5'],
@@ -197,8 +302,20 @@ export default () => ({
         ['11', '11'],
       ],
     },
-    ANALOG_PINS: {
-      // 模拟读引脚
+    R4_PWM_PINS: {
+      // Arduino UNO R4 模拟和 PWM 写引脚
+      items: [
+        ['3', '3'],
+        ['5', '5'],
+        ['6', '6'],
+        ['9', '9'],
+        ['10', '10'],
+        ['11', '11'],
+        ['A0', 'A0'],
+      ],
+    },
+    UNO_ANALOG_PINS: {
+      // Arduino UNO 模拟读引脚
       items: [
         ['A0', 'A0'],
         ['A1', 'A1'],
@@ -206,6 +323,19 @@ export default () => ({
         ['A3', 'A3'],
         ['A4', 'A4'],
         ['A5', 'A5'],
+      ],
+    },
+    NANO_ANALOG_PINS: {
+      // Arduino Nano 模拟读引脚
+      items: [
+        ['A0', 'A0'],
+        ['A1', 'A1'],
+        ['A2', 'A2'],
+        ['A3', 'A3'],
+        ['A4', 'A4'],
+        ['A5', 'A5'],
+        ['A6', 'A6'],
+        ['A7', 'A7'],
       ],
     },
   },

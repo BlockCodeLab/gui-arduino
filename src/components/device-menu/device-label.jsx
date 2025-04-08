@@ -1,12 +1,12 @@
-import { useAppContext, Text } from '@blockcode/core';
+import { useProjectContext, Text } from '@blockcode/core';
 import { ArduinoBoards } from '../../lib/boards';
 
 import deviceIcon from './icon-device.png';
 
 export function DeviceLabel() {
-  const { appState } = useAppContext();
+  const { meta } = useProjectContext();
 
-  if (appState.value?.boardType === ArduinoBoards.ArduinoUnoR4) {
+  if (meta.value.boardType === ArduinoBoards.ArduinoUnoR4) {
     return (
       <Text
         id="arduino.menubar.device.unoR4"
@@ -15,7 +15,7 @@ export function DeviceLabel() {
     );
   }
 
-  if (appState.value?.boardType === ArduinoBoards.ArduinoNano) {
+  if (meta.value.boardType === ArduinoBoards.ArduinoNano) {
     return (
       <Text
         id="arduino.menubar.device.nano"

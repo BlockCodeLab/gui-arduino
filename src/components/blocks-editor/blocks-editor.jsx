@@ -1,5 +1,5 @@
 import { useCallback } from 'preact/hooks';
-import { useAppContext } from '@blockcode/core';
+import { useProjectContext } from '@blockcode/core';
 import { BlocksEditor } from '@blockcode/blocks';
 import { ArduinoGenerator, buildBlocks, VARIABLE_TYPES } from '../../blocks/blocks';
 
@@ -8,11 +8,11 @@ const generator = new ArduinoGenerator();
 const handleExtensionsFilter = () => ['arduino'];
 
 export function ArduinoBlocksEditor() {
-  const { appState } = useAppContext();
+  const { meta } = useProjectContext();
 
   const handleBuildinExtensions = useCallback(() => {
-    return buildBlocks(appState.value.boardType);
-  }, [appState.value?.boardType]);
+    return buildBlocks(meta.value.boardType);
+  }, [meta.value.boardType]);
 
   return (
     <BlocksEditor

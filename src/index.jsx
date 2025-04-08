@@ -10,13 +10,14 @@ import { DeviceIcon } from './components/device-menu/device-icon';
 import { DeviceLabel } from './components/device-menu/device-label';
 import { DeviceMenu } from './components/device-menu/device-menu';
 import { defaultProject } from './lib/default-project';
+import { ArduinoBoards } from './lib/boards';
 
 export default {
   onNew() {
     return defaultProject;
   },
 
-  onSave(files, assets) {
+  onSave(files, assets, meta) {
     const extensions = [];
     files = files.map((file) => {
       extensions.push(file.extensions);
@@ -26,13 +27,13 @@ export default {
         xml: file.xml,
       };
     });
-    const meta = {
-      extensions: Array.from(new Set(extensions.flat())),
-    };
     return {
-      meta,
       files,
       assets,
+      meta: {
+        extensions: Array.from(new Set(extensions.flat())),
+        boardType: meta.boardType ?? ArduinoBoards.ArduinoUno,
+      },
     };
   },
 

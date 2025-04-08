@@ -1,23 +1,23 @@
 import { useEffect, useCallback } from 'preact/hooks';
 import { classNames } from '@blockcode/utils';
-import { useAppContext, setAppState, Text, MenuSection, MenuItem } from '@blockcode/core';
+import { useProjectContext, setMeta, Text, MenuSection, MenuItem } from '@blockcode/core';
 import { ArduinoBoards } from '../../lib/boards';
 import styles from './device-menu.module.css';
 
 import checkIcon from './icon-check.svg';
 
 export function BoardsSection({ itemClassName }) {
-  const { appState } = useAppContext();
+  const { meta } = useProjectContext();
 
   useEffect(() => {
-    if (!appState.value?.boardType) {
-      setAppState('boardType', ArduinoBoards.ArduinoUno);
+    if (!meta.value.boardType) {
+      setMeta('boardType', ArduinoBoards.ArduinoUno);
     }
   }, []);
 
   const chooseBoardHandler = useCallback(
     (boardType) => () => {
-      setAppState({ boardType });
+      setMeta({ boardType });
     },
     [],
   );
@@ -30,7 +30,7 @@ export function BoardsSection({ itemClassName }) {
       >
         <img
           className={classNames(styles.checkIcon, {
-            [styles.checked]: appState.value?.boardType === ArduinoBoards.ArduinoUno,
+            [styles.checked]: meta.value.boardType === ArduinoBoards.ArduinoUno,
           })}
           src={checkIcon}
         />
@@ -45,7 +45,7 @@ export function BoardsSection({ itemClassName }) {
       >
         <img
           className={classNames(styles.checkIcon, {
-            [styles.checked]: appState.value?.boardType === ArduinoBoards.ArduinoUnoR4,
+            [styles.checked]: meta.value.boardType === ArduinoBoards.ArduinoUnoR4,
           })}
           src={checkIcon}
         />
@@ -60,7 +60,7 @@ export function BoardsSection({ itemClassName }) {
       >
         <img
           className={classNames(styles.checkIcon, {
-            [styles.checked]: appState.value?.boardType === ArduinoBoards.ArduinoNano,
+            [styles.checked]: meta.value.boardType === ArduinoBoards.ArduinoNano,
           })}
           src={checkIcon}
         />

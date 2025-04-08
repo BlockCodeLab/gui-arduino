@@ -103,6 +103,7 @@ export function DeviceMenu({ itemClassName }) {
               await server.flash(ret);
               downloadingAlert(100);
               await new Promise((resolve) => setTimeout(resolve, 2000));
+              server.disconnect();
             } catch (err) {
               errorAlert(err.name);
             }
@@ -143,6 +144,7 @@ export function DeviceMenu({ itemClassName }) {
               await server.flashFile(ret);
               downloadingAlert(100);
               await new Promise((resolve) => setTimeout(resolve, 2000));
+              server.close();
             } catch (err) {
               errorAlert(err.name);
             }

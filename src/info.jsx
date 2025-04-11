@@ -22,7 +22,7 @@ addLocalesMessages({
 
 export default {
   version,
-  beta: true,
+  preview: true,
   sortIndex: 100, // 开发板产品
   image: featureImage,
   name: (

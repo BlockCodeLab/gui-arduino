@@ -1,6 +1,7 @@
-import { nanoid, classNames } from '@blockcode/utils';
+import { useCallback } from 'preact/hooks';
+import { nanoid, classNames, sleepMs } from '@blockcode/utils';
 import { useProjectContext, setAlert, delAlert, openPromptModal } from '@blockcode/core';
-import { ASerialPort, BleSerialPort } from '@blockcode/board';
+import { ArduinoUtils } from '@blockcode/board';
 import { compile } from '../../lib/compile';
 
 import { Spinner, Text, MenuSection, MenuItem } from '@blockcode/core';
@@ -12,6 +13,20 @@ let downloadAlertId = null;
 const removeDownloading = () => {
   delAlert(downloadAlertId);
   downloadAlertId = null;
+};
+
+const compilingAlert = () => {
+  if (!downloadAlertId) {
+    downloadAlertId = nanoid();
+  }
+  setAlert('compiling', { id: downloadAlertId });
+};
+
+const compileErrorAlert = () => {
+  if (!downloadAlertId) {
+    downloadAlertId = nanoid();
+  }
+  setAlert('compileError', { id: downloadAlertId });
 };
 
 const downloadingAlert = (progress) => {
@@ -41,8 +56,65 @@ const errorAlert = (err) => {
   setAlert('connectionError', 1000);
 };
 
+const downloadProgram = async (device, content) => {
+  // const checker = ArduinoUtils.check(device).catch(() => {
+  //   errorAlert();
+  //   removeDownloading();
+  // });
+
+  // 编译
+  compilingAlert();
+  let hex;
+  try {
+    hex = await compile(content);
+  } catch (err) {}
+  if (!hex) {
+    compileErrorAlert();
+    return;
+  }
+
+  downloadingAlert(0);
+  try {
+    await ArduinoUtils.write(device, hex, downloadingAlert);
+    await sleepMs(500);
+    device.disconnect();
+  } catch (err) {
+    console.log(err);
+    errorAlert(err.name);
+    removeDownloading();
+  }
+
+  // checker.cancel();
+};
+
 export function DeviceMenu({ itemClassName }) {
   const { file } = useProjectContext();
+
+  const handleDownload = useCallback(async () => {
+    if (downloadAlertId) return;
+
+    let device;
+    try {
+      device = await ArduinoUtils.connect({ baudRate: 115200 });
+    } catch (err) {
+      errorAlert(err.name);
+    }
+    if (!device) return;
+    await downloadProgram(device, file.value.content);
+  }, []);
+
+  const handleDownloadBLE = useCallback(async () => {
+    if (downloadAlertId) return;
+
+    let device;
+    try {
+      device = await ArduinoUtils.connectBLE();
+    } catch (err) {
+      errorAlert(err.name);
+    }
+    if (!device) return;
+    await downloadProgram(device, file.value.content);
+  }, []);
 
   return (
     <>
@@ -52,80 +124,23 @@ export function DeviceMenu({ itemClassName }) {
           className={classNames(itemClassName, styles.blankCheckItem)}
           label={
             <Text
-              id="arduino.menubar.device.downloadBle"
-              defaultMessage="Download program via Bluetooth (BLE)"
+              id="arduino.menubar.device.download"
+              defaultMessage="Download program via Serial Port"
             />
           }
-          onClick={async () => {
-            if (downloadAlertId) return;
-            const options = {
-              filters: [{ services: ['0000ffe0-0000-1000-8000-00805f9b34fb'] }],
-            };
-            let gattServer;
-            try {
-              const device = await navigator.bluetooth.requestDevice(options);
-              gattServer = await device.gatt.connect();
-            } catch (err) {
-              console.log(err);
-              errorAlert(err.name);
-              return;
-            }
-            downloadingAlert('0.0');
-            try {
-              const server = new BleSerialPort();
-              server.init(gattServer);
-              downloadingAlert(25);
-              const ret = await compile(file.value.content);
-              downloadingAlert(50);
-              await server.flash(ret);
-              downloadingAlert(100);
-              await new Promise((resolve) => setTimeout(resolve, 2000));
-              server.disconnect();
-            } catch (err) {
-              errorAlert(err.name);
-            }
-            removeDownloading();
-          }}
+          onClick={handleDownload}
         />
+
         <MenuItem
           disabled={downloadAlertId}
           className={classNames(itemClassName, styles.blankCheckItem)}
           label={
             <Text
-              id="arduino.menubar.device.download"
-              defaultMessage="Download program via Serial Port"
+              id="arduino.menubar.device.downloadBle"
+              defaultMessage="Download program via Bluetooth (BLE)"
             />
           }
-          onClick={async () => {
-            if (downloadAlertId) return;
-            const options = {
-              filters: [],
-            };
-            let serialPort;
-            try {
-              serialPort = await navigator.serial.requestPort(options);
-            } catch (err) {
-              console.log(err);
-              errorAlert(err.name);
-              return;
-            }
-            downloadingAlert(0);
-            try {
-              const server = new ASerialPort(serialPort);
-              server.open({ baudRate: 57600 });
-              await new Promise((resolve) => setTimeout(resolve, 500));
-              downloadingAlert(25);
-              const ret = await compile(file.value.content);
-              downloadingAlert(50);
-              await server.flashFile(ret);
-              downloadingAlert(100);
-              await new Promise((resolve) => setTimeout(resolve, 2000));
-              server.close();
-            } catch (err) {
-              errorAlert(err.name);
-            }
-            removeDownloading();
-          }}
+          onClick={handleDownloadBLE}
         />
       </MenuSection>
 

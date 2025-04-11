@@ -15,10 +15,9 @@ export async function compile(sketch, fqbn = 'arduino:avr:uno') {
     body: data,
   });
   const resData = await res.json();
-  const base64Data = resData?.data?.hex;
-  if (base64Data) {
-    return atob(base64Data);
+  if (resData.status.success && resData?.data?.hex) {
+    return atob(resData.data.hex);
   } else {
-    return null;
+    Promise.reject(new Error(resData.status.message));
   }
 }

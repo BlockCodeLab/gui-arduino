@@ -3,8 +3,8 @@ arduino.menubar.device.uno: Arduino Uno
 arduino.menubar.device.unoR4: Arduino Uno R4
 arduino.menubar.device.nano: Arduino Nano
 
-arduino.menubar.device.download: 通過串口下載程式
-arduino.menubar.device.downloadBle: 通過藍牙（BLE）下載程式
+arduino.menubar.device.download: 通過 USB 下載程式
+arduino.menubar.device.downloadBle: 通過藍牙下載程式
 
 arduino.blocks.displayMatrix: 顯示圖示 %1
 arduino.blocks.clearDisplay: 清空畫面

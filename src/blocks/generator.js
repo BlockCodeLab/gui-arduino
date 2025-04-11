@@ -1,5 +1,7 @@
 import { ClangGenerator } from '@blockcode/blocks';
 
+const GENERATOR_COMMENT = '/* Generate by BlockCode */\n';
+
 export class ArduinoGenerator extends ClangGenerator {
   constructor() {
     super('INO');
@@ -44,14 +46,20 @@ export class ArduinoGenerator extends ClangGenerator {
     }
     //imports--> #include
     //definitions--> function def, #def
-    const allDefs =
-      includes.join('\n') +
-      '\n\n' +
-      declarations.join('\n') +
-      '\n\n' +
-      defines.join('\n') +
-      '\n\n' +
-      defvars.join('\n');
+    let allDefs = '';
+    if (includes.length > 0) {
+      allDefs += includes.join('\n') + '\n\n';
+    }
+    if (declarations.length > 0) {
+      allDefs += declarations.join('\n') + '\n\n';
+    }
+    if (defines.length > 0) {
+      allDefs += defines.join('\n') + '\n\n';
+    }
+    if (defvars.length > 0) {
+      allDefs += defvars.join('\n') + '\n\n';
+    }
+
     const allFuncs =
       `void setup() {\n${this.setup_}}` + // setup
       '\n\n' +
@@ -65,6 +73,6 @@ export class ArduinoGenerator extends ClangGenerator {
     delete this.loop_;
     this.variableDB_.reset();
 
-    return allDefs.replace(/\n\n+/g, '\n\n') + '\n\n' + code + allFuncs.replace(/\n\n+/g, '\n\n');
+    return GENERATOR_COMMENT + allDefs.replace(/\n\n+/g, '\n\n') + code + allFuncs.replace(/\n\n+/g, '\n\n');
   }
 }

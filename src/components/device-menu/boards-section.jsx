@@ -26,6 +26,21 @@ export function BoardsSection({ itemClassName }) {
     <MenuSection>
       <MenuItem
         className={itemClassName}
+        onClick={chooseBoardHandler(ArduinoBoards.BLEUNO)}
+      >
+        <img
+          className={classNames(styles.checkIcon, {
+            [styles.checked]: meta.value.boardType === ArduinoBoards.BLEUNO,
+          })}
+          src={checkIcon}
+        />
+        <Text
+          id="arduino.menubar.device.bleuno"
+          defaultMessage="BLE-UNO/NANO"
+        />
+      </MenuItem>
+      <MenuItem
+        className={itemClassName}
         onClick={chooseBoardHandler(ArduinoBoards.ArduinoUno)}
       >
         <img
@@ -39,7 +54,7 @@ export function BoardsSection({ itemClassName }) {
           defaultMessage="Arduino Uno"
         />
       </MenuItem>
-      <MenuItem
+      {/* <MenuItem
         className={itemClassName}
         onClick={chooseBoardHandler(ArduinoBoards.ArduinoUnoR4)}
       >
@@ -53,7 +68,7 @@ export function BoardsSection({ itemClassName }) {
           id="arduino.menubar.device.unoR4"
           defaultMessage="Arduino Uno R4"
         />
-      </MenuItem>
+      </MenuItem> */}
       <MenuItem
         className={itemClassName}
         onClick={chooseBoardHandler(ArduinoBoards.ArduinoNano)}

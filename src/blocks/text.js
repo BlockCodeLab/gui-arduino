@@ -17,11 +17,11 @@ export default () => ({
       inputs: {
         STRING1: {
           type: 'string',
-          defaultValue: ScratchBlocks.Msg.OPERATORS_JOIN_APPLE,
+          defaultValue: 'hello',
         },
         STRING2: {
           type: 'string',
-          defaultValue: ScratchBlocks.Msg.OPERATORS_JOIN_BANANA,
+          defaultValue: 'arduino',
         },
       },
       ino(block) {
@@ -43,7 +43,7 @@ export default () => ({
         },
         STRING: {
           type: 'string',
-          defaultValue: ScratchBlocks.Msg.OPERATORS_JOIN_APPLE,
+          defaultValue: 'arduino',
         },
       },
       ino(block) {
@@ -61,7 +61,7 @@ export default () => ({
       inputs: {
         STRING: {
           type: 'string',
-          defaultValue: ScratchBlocks.Msg.OPERATORS_JOIN_APPLE,
+          defaultValue: 'arduino',
         },
       },
       ino(block) {
@@ -78,11 +78,11 @@ export default () => ({
       inputs: {
         STRING1: {
           type: 'string',
-          defaultValue: ScratchBlocks.Msg.OPERATORS_JOIN_APPLE,
+          defaultValue: 'arduino',
         },
         STRING2: {
           type: 'string',
-          defaultValue: ScratchBlocks.Msg.OPERATORS_LETTEROF_APPLE,
+          defaultValue: 'ino',
         },
       },
       ino(block) {
@@ -100,11 +100,11 @@ export default () => ({
       inputs: {
         STRING1: {
           type: 'string',
-          defaultValue: ScratchBlocks.Msg.OPERATORS_JOIN_APPLE,
+          defaultValue: 'arduino',
         },
         STRING2: {
           type: 'string',
-          defaultValue: ScratchBlocks.Msg.OPERATORS_JOIN_BANANA,
+          defaultValue: 'Arduino',
         },
       },
       ino(block) {
@@ -130,7 +130,7 @@ export default () => ({
         },
         STRING: {
           type: 'string',
-          defaultValue: ScratchBlocks.Msg.OPERATORS_JOIN_APPLE,
+          defaultValue: 'arduino',
         },
       },
       ino(block) {
@@ -148,15 +148,15 @@ export default () => ({
       inputs: {
         STRING1: {
           type: 'string',
-          defaultValue: ScratchBlocks.Msg.OPERATORS_LETTEROF_APPLE,
+          defaultValue: 'a',
         },
         STRING2: {
           type: 'string',
-          defaultValue: ScratchBlocks.Msg.OPERATORS_JOIN_APPLE,
+          defaultValue: 'arduino',
         },
         STRING3: {
           type: 'string',
-          defaultValue: ScratchBlocks.Msg.OPERATORS_JOIN_BANANA[0],
+          defaultValue: 'The A',
         },
       },
       ino(block) {
@@ -178,11 +178,11 @@ export default () => ({
         },
         STRING: {
           type: 'string',
-          defaultValue: ScratchBlocks.Msg.OPERATORS_JOIN_APPLE,
+          defaultValue: 'arduino',
         },
         LETTER: {
           type: 'string',
-          defaultValue: ScratchBlocks.Msg.OPERATORS_JOIN_BANANA[0],
+          defaultValue: 'A',
         },
       },
       ino(block) {
@@ -201,15 +201,15 @@ export default () => ({
       inputs: {
         STRING: {
           type: 'string',
-          defaultValue: ScratchBlocks.Msg.OPERATORS_JOIN_APPLE,
+          defaultValue: 'arduino',
         },
         FROM: {
           type: 'integer',
-          defaultValue: 1,
+          defaultValue: 5,
         },
         TO: {
           type: 'integer',
-          defaultValue: 2,
+          defaultValue: 7,
         },
       },
       ino(block) {
@@ -228,7 +228,7 @@ export default () => ({
       inputs: {
         STRING1: {
           type: 'string',
-          defaultValue: ScratchBlocks.Msg.OPERATORS_JOIN_APPLE,
+          defaultValue: 'arduino',
         },
         WITH: {
           type: 'string',
@@ -239,7 +239,7 @@ export default () => ({
         },
         STRING2: {
           type: 'string',
-          defaultValue: ScratchBlocks.Msg.OPERATORS_LETTEROF_APPLE,
+          defaultValue: 'a',
         },
       },
       ino(block) {
@@ -264,7 +264,7 @@ export default () => ({
         },
         STRING: {
           type: 'string',
-          defaultValue: 'Abc',
+          defaultValue: 'Arduino',
         },
       },
       ino(block) {
@@ -281,7 +281,7 @@ export default () => ({
       inputs: {
         STRING: {
           type: 'string',
-          defaultValue: ScratchBlocks.Msg.OPERATORS_JOIN_APPLE,
+          defaultValue: 'arduino',
         },
       },
       ino(block) {

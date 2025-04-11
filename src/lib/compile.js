@@ -15,9 +15,12 @@ export async function compile(sketch, fqbn = 'arduino:avr:uno') {
     body: data,
   });
   const resData = await res.json();
-  if (resData.status.success && resData?.data?.hex) {
+  if (resData?.status?.success && resData?.data?.hex) {
     return atob(resData.data.hex);
   } else {
-    Promise.reject(new Error(resData.status.message));
+    let message = resData?.data?.details ?? 'fatal error: ';
+    message = message.split('\u001b')[0];
+    message = message.split('fatal error:')[1];
+    throw new Error(message.trim());
   }
 }

@@ -2,10 +2,17 @@ arduino.menubar.device: Arduino
 arduino.menubar.device.uno: Arduino Uno
 arduino.menubar.device.unoR4: Arduino Uno R4
 arduino.menubar.device.nano: Arduino Nano
+arduino.menubar.device.bleuno: BLE-UNO/NANO
 
 arduino.menubar.device.download: 通過 USB 下載程式
 arduino.menubar.device.downloadBle: 通過藍牙下載程式
 
+arduino.menubar.edit.classicEventsOpen: 開啟舊樣式事件積木
+arduino.menubar.edit.classicEventsClose: 關閉舊樣式事件積木
+
+arduino.alert.manualCoding: 警告：手動編寫的代碼在離開「代碼」頁後將被還原。
+
+arduino.blocks.classicEventsLabel: 经典事件積木請從「編輯」菜單開啟。
 arduino.blocks.displayMatrix: 顯示圖示 %1
 arduino.blocks.clearDisplay: 清空畫面
 arduino.blocks.wait: 等待 %1 毫秒
@@ -36,7 +43,7 @@ arduino.blocks.inputPullUpMode: 上拉輸入
 arduino.blocks.setdigital: 將數字引腳 %1 設為 %2
 arduino.blocks.digitalHigh: 高電平
 arduino.blocks.digitalLow: 低電平
-arduino.blocks.setanalog: 將模擬引腳 %1 設為 %2
+arduino.blocks.setanalog: 將 PWM 引腳 %1 設為 %2
 arduino.blocks.isDigitalHigh: 數字引腳 %1 是高電平？
 arduino.blocks.analogValue: 模擬引腳 %1
 arduino.blocks.attachinterrupt: 將引腳 %1 中斷模式設為 %2

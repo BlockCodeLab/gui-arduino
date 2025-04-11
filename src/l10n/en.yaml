@@ -2,10 +2,17 @@ arduino.menubar.device: Arduino
 arduino.menubar.device.uno: Arduino Uno
 arduino.menubar.device.unoR4: Arduino Uno R4
 arduino.menubar.device.nano: Arduino Nano
+arduino.menubar.device.bleuno: BLE-UNO/NANO
 
 arduino.menubar.device.download: Download program via USB
 arduino.menubar.device.downloadBle: Download program via Bluetooth
 
+arduino.menubar.edit.classicEventsOpen: Turn on Classic Event Blocks
+arduino.menubar.edit.classicEventsClose: Turn off Classic Event Blocks
+
+arduino.alert.manualCoding: "Warning: Manual coding will be reverted when leaving Code tab."
+
+arduino.blocks.classicEventsLabel: Classic events turned on from Edit.
 arduino.blocks.displayMatrix: display %1
 arduino.blocks.clearDisplay: clear display
 arduino.blocks.wait: wait %1 milliseconds

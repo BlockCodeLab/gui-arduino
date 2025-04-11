@@ -6,6 +6,15 @@ import deviceIcon from './icon-device.png';
 export function DeviceLabel() {
   const { meta } = useProjectContext();
 
+  if (meta.value.boardType === ArduinoBoards.BLEUNO) {
+    return (
+      <Text
+        id="arduino.menubar.device.bleuno"
+        defaultMessage="BLE-UNO/NANO"
+      />
+    );
+  }
+
   if (meta.value.boardType === ArduinoBoards.ArduinoUnoR4) {
     return (
       <Text

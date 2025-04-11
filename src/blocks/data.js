@@ -19,7 +19,7 @@ export default () => ({
       inputs: {
         DATA: {
           type: 'string',
-          defaultValue: '123',
+          defaultValue: '3.1415',
         },
         TYPE: {
           menu: ['int', 'float', 'String'],
@@ -51,7 +51,7 @@ export default () => ({
       inputs: {
         DATA: {
           type: 'string',
-          defaultValue: 'abc',
+          defaultValue: 'arduino',
         },
       },
       ino(block) {

@@ -15,11 +15,15 @@ export default () => ({
       text: translate('arduino.blocks.serialBaudrate', 'set baudrate to %1'),
       inputs: {
         BAUDRATE: {
-          menu: ['4800', '9600', '38400', '57600', '115200'],
+          menu: {
+            inputMode: true,
+            defaultValue: '115200',
+            items: ['4800', '9600', '38400', '57600', '115200'],
+          },
         },
       },
       ino(block) {
-        const baud = block.getFieldValue('BAUDRATE') || '9600';
+        const baud = this.valueToCode(block, 'BAUDRATE', this.ORDER_NONE);
         const code = `Serial.begin(${baud});\n`;
         return code;
       },
@@ -48,7 +52,7 @@ export default () => ({
       inputs: {
         STRING: {
           type: 'string',
-          defaultValue: ScratchBlocks.Msg.OPERATORS_JOIN_BANANA,
+          defaultValue: 'hello',
         },
         MODE: {
           menu: [

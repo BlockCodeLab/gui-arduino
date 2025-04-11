@@ -15,7 +15,7 @@ export default (boardType) => ({
       text: translate('arduino.blocks.setmode', 'set pin %1 mode to %2'),
       inputs: {
         PIN: {
-          menu: boardType === ArduinoBoards.ArduinoNano ? 'NANO_PINS' : 'UNO_PINS',
+          menu: [ArduinoBoards.ArduinoNano, ArduinoBoards.BLEUNO].includes(boardType) ? 'NANO_PINS' : 'UNO_PINS',
         },
         MODE: {
           menu: [
@@ -39,7 +39,7 @@ export default (boardType) => ({
       text: translate('arduino.blocks.setdigital', 'set digital pin %1 to %2'),
       inputs: {
         PIN: {
-          menu: boardType === ArduinoBoards.ArduinoNano ? 'NANO_PINS' : 'UNO_PINS',
+          menu: [ArduinoBoards.ArduinoNano, ArduinoBoards.BLEUNO].includes(boardType) ? 'NANO_PINS' : 'UNO_PINS',
         },
         VALUE: {
           inputMode: true,
@@ -64,11 +64,10 @@ export default (boardType) => ({
       text: translate('arduino.blocks.setanalog', 'set pwm pin %1 to %2'),
       inputs: {
         PIN: {
-          menu: boardType === ArduinoBoards.ArduinoNano ? 'R4_PWM_PINS' : 'PWM_PINS',
+          menu: boardType === ArduinoBoards.ArduinoUnoR4 ? 'R4_PWM_PINS' : 'PWM_PINS',
         },
         VALUE: {
-          type: 'integer',
-          defaultValue: 127,
+          shadow: 'slider255',
         },
       },
       ino(block) {
@@ -79,13 +78,32 @@ export default (boardType) => ({
       },
     },
     {
+      // 0-255 滑块
+      id: 'slider255',
+      inline: true,
+      output: 'number',
+      inputs: {
+        VALUE: {
+          type: 'slider',
+          min: 0,
+          max: 255,
+          step: 1,
+          defaultValue: 127,
+        },
+      },
+      ino(block) {
+        const value = block.getFieldValue('VALUE') || 0;
+        return [value, this.ORDER_ATOMIC];
+      },
+    },
+    {
       // 数字引脚是否为高电平？
       id: 'digital',
       text: translate('arduino.blocks.isDigitalHigh', 'digital pin %1 is high?'),
       output: 'boolean',
       inputs: {
         PIN: {
-          menu: boardType === ArduinoBoards.ArduinoNano ? 'NANO_PINS' : 'UNO_PINS',
+          menu: [ArduinoBoards.ArduinoNano, ArduinoBoards.BLEUNO].includes(boardType) ? 'NANO_PINS' : 'UNO_PINS',
         },
       },
       ino(block) {
@@ -101,7 +119,9 @@ export default (boardType) => ({
       output: 'number',
       inputs: {
         PIN: {
-          menu: boardType === ArduinoBoards.ArduinoNano ? 'NANO_ANALOG_PINS' : 'UNO_ANALOG_PINS',
+          menu: [ArduinoBoards.ArduinoNano, ArduinoBoards.BLEUNO].includes(boardType)
+            ? 'NANO_ANALOG_PINS'
+            : 'UNO_ANALOG_PINS',
         },
       },
       ino(block) {
@@ -118,7 +138,7 @@ export default (boardType) => ({
       substack: true,
       inputs: {
         PIN: {
-          menu: boardType === ArduinoBoards.ArduinoNano ? 'NANO_PINS' : 'UNO_PINS',
+          menu: [ArduinoBoards.ArduinoNano, ArduinoBoards.BLEUNO].includes(boardType) ? 'NANO_PINS' : 'UNO_PINS',
         },
         INTERRUPT: {
           menu: [
@@ -150,7 +170,7 @@ export default (boardType) => ({
       text: translate('arduino.blocks.detachinterrupt', 'detach pin %1 interrupt'),
       inputs: {
         PIN: {
-          menu: boardType === ArduinoBoards.ArduinoNano ? 'NANO_PINS' : 'UNO_PINS',
+          menu: [ArduinoBoards.ArduinoNano, ArduinoBoards.BLEUNO].includes(boardType) ? 'NANO_PINS' : 'UNO_PINS',
         },
       },
       ino(block) {

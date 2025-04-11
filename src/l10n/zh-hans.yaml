@@ -2,10 +2,17 @@ arduino.menubar.device: Arduino
 arduino.menubar.device.uno: Arduino Uno
 arduino.menubar.device.unoR4: Arduino Uno R4
 arduino.menubar.device.nano: Arduino Nano
+arduino.menubar.device.bleuno: BLE-UNO/NANO
 
 arduino.menubar.device.download: 通过 USB 下载程序
 arduino.menubar.device.downloadBle: 通过蓝牙下载程序
 
+arduino.menubar.edit.classicEventsOpen: 打开经典事件积木
+arduino.menubar.edit.classicEventsClose: 关闭经典事件积木
+
+arduino.alert.manualCoding: 警告：手动修改的代码在离开“代码”页后将被还原。
+
+arduino.blocks.classicEventsLabel: 经典事件积木请从“编辑”菜单开启。
 arduino.blocks.displayMatrix: 显示 %1
 arduino.blocks.clearDisplay: 清除显示
 arduino.blocks.wait: 等待 %1 毫秒
@@ -36,7 +43,7 @@ arduino.blocks.inputPullUpMode: 上拉输入
 arduino.blocks.setdigital: 将数字引脚 %1 设为 %2
 arduino.blocks.digitalHigh: 高电平
 arduino.blocks.digitalLow: 低电平
-arduino.blocks.setanalog: 将模拟引脚 %1 设为 %2
+arduino.blocks.setanalog: 将 PWM 引脚 %1 设为 %2
 arduino.blocks.isDigitalHigh: 数字引脚 %1 是高电平？
 arduino.blocks.analogValue: 模拟引脚 %1
 arduino.blocks.attachinterrupt: 将引脚 %1 中断模式设为 %2

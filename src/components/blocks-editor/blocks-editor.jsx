@@ -1,27 +1,73 @@
-import { useCallback } from 'preact/hooks';
-import { useProjectContext } from '@blockcode/core';
+import { useEffect, useCallback } from 'preact/hooks';
+import { useSignal } from '@preact/signals';
+import { useAppContext, useProjectContext, setAppState } from '@blockcode/core';
 import { BlocksEditor } from '@blockcode/blocks';
+import { CodeEditor } from '@blockcode/code';
 import { ArduinoGenerator, buildBlocks, VARIABLE_TYPES } from '../../blocks/blocks';
+
+import showIcon from './icon-show.svg';
+import hideIcon from './icon-hide.svg';
+import styles from './blocks-editor.module.css';
 
 const generator = new ArduinoGenerator();
 
 const handleExtensionsFilter = () => ['arduino'];
 
 export function ArduinoBlocksEditor() {
+  const { appState } = useAppContext();
+
   const { meta } = useProjectContext();
 
+  const toolboxStyles = useSignal(null);
+
   const handleBuildinExtensions = useCallback(() => {
-    return buildBlocks(meta.value.boardType);
-  }, [meta.value.boardType]);
+    return buildBlocks(meta.value.boardType, meta.value.classicEvents);
+  }, [meta.value.boardType, meta.value.classicEvents]);
+
+  const handleResize = useCallback(() => {
+    const toolbox = document.querySelector('.blocklyZoom');
+    const transform = toolbox.getAttribute('transform');
+    toolboxStyles.value = {
+      transform: transform.replace(/(\d+)/g, '$1px'),
+    };
+  }, []);
+
+  const handleCodePreview = useCallback(() => {
+    const hiddenCodePreview = !appState.value?.hiddenCodePreview;
+    setAppState({ hiddenCodePreview });
+  }, []);
 
   return (
-    <BlocksEditor
-      enableProcedureReturns
-      disableSensingBlocks
-      variableTypes={VARIABLE_TYPES}
-      generator={generator}
-      onBuildinExtensions={handleBuildinExtensions}
-      onExtensionsFilter={handleExtensionsFilter}
-    />
+    <div className={styles.editorWrapper}>
+      <BlocksEditor
+        enableProcedureReturns
+        disableSensingBlocks
+        variableTypes={VARIABLE_TYPES}
+        generator={generator}
+        onBuildinExtensions={handleBuildinExtensions}
+        onExtensionsFilter={handleExtensionsFilter}
+        onResize={handleResize}
+      />
+
+      <div
+        className={styles.toolboxWrapper}
+        style={toolboxStyles.value}
+      >
+        <img
+          width={36}
+          height={36}
+          src={appState.value?.hiddenCodePreview ? hideIcon : showIcon}
+          onClick={handleCodePreview}
+        />
+      </div>
+
+      {!appState.value?.hiddenCodePreview && (
+        <CodeEditor
+          readOnly
+          fontSize={13}
+          className={styles.codeEditor}
+        />
+      )}
+    </div>
   );
 }

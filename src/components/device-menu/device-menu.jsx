@@ -2,6 +2,7 @@ import { useCallback } from 'preact/hooks';
 import { nanoid, classNames, sleepMs } from '@blockcode/utils';
 import { useProjectContext, setAlert, delAlert, openPromptModal } from '@blockcode/core';
 import { ArduinoUtils } from '@blockcode/board';
+import { ArduinoBoards } from '../../lib/boards';
 import { compile } from '../../lib/compile';
 
 import { Spinner, Text, MenuSection, MenuItem } from '@blockcode/core';
@@ -22,11 +23,34 @@ const compilingAlert = () => {
   setAlert('compiling', { id: downloadAlertId });
 };
 
-const compileErrorAlert = () => {
+const compileErrorAlert = (message) => {
   if (!downloadAlertId) {
     downloadAlertId = nanoid();
   }
-  setAlert('compileError', { id: downloadAlertId });
+  setAlert('compileError', {
+    id: downloadAlertId,
+    icon: null,
+    button: {
+      label: (
+        <Text
+          id="gui.alert.compileViewError"
+          defaultMessage="View Message"
+        />
+      ),
+      onClick() {
+        openPromptModal({
+          title: (
+            <Text
+              id="gui.alert.compileError"
+              defaultMessage="Compilation Error"
+            />
+          ),
+          content: `<pre>${message}</pre>`,
+        });
+      },
+    },
+    onClose: removeDownloading,
+  });
 };
 
 const downloadingAlert = (progress) => {
@@ -67,7 +91,10 @@ const downloadProgram = async (device, content) => {
   let hex;
   try {
     hex = await compile(content);
-  } catch (err) {}
+  } catch (err) {
+    compileErrorAlert(err.message);
+    return;
+  }
   if (!hex) {
     compileErrorAlert();
     return;
@@ -88,7 +115,7 @@ const downloadProgram = async (device, content) => {
 };
 
 export function DeviceMenu({ itemClassName }) {
-  const { file } = useProjectContext();
+  const { meta, file } = useProjectContext();
 
   const handleDownload = useCallback(async () => {
     if (downloadAlertId) return;
@@ -119,6 +146,20 @@ export function DeviceMenu({ itemClassName }) {
   return (
     <>
       <MenuSection>
+        {meta.value.boardType === ArduinoBoards.BLEUNO && (
+          <MenuItem
+            disabled={downloadAlertId}
+            className={classNames(itemClassName, styles.blankCheckItem)}
+            label={
+              <Text
+                id="arduino.menubar.device.downloadBle"
+                defaultMessage="Download program via Bluetooth (BLE)"
+              />
+            }
+            onClick={handleDownloadBLE}
+          />
+        )}
+
         <MenuItem
           disabled={downloadAlertId}
           className={classNames(itemClassName, styles.blankCheckItem)}
@@ -129,18 +170,6 @@ export function DeviceMenu({ itemClassName }) {
             />
           }
           onClick={handleDownload}
-        />
-
-        <MenuItem
-          disabled={downloadAlertId}
-          className={classNames(itemClassName, styles.blankCheckItem)}
-          label={
-            <Text
-              id="arduino.menubar.device.downloadBle"
-              defaultMessage="Download program via Bluetooth (BLE)"
-            />
-          }
-          onClick={handleDownloadBLE}
         />
       </MenuSection>
 

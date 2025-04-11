@@ -12,11 +12,11 @@ export { ArduinoGenerator } from './generator';
 
 export { VARIABLE_TYPES } from './data';
 
-export function buildBlocks(boardType) {
+export function buildBlocks(boardType, classicEvents) {
   const pinsBlocks = getPinsBlocks(boardType);
   const textBlocks = getTextBlocks();
   const serialBlocks = getSerialBlocks();
-  const eventsBlocks = getEventsBlocks();
+  const eventsBlocks = getEventsBlocks(classicEvents);
   const controlBlocks = getControlBlocks();
   const protocolsBlocks = getProtocolsBlocks();
   const operatorsBlocks = getOperatorsBlocks();

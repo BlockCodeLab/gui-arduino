@@ -2,13 +2,14 @@ import './l10n';
 
 import { svgAsDataUri } from '@blockcode/utils';
 import { ScratchBlocks, blocksTab } from '@blockcode/blocks';
-import { codeTab } from '@blockcode/code';
+import { codeTab, terminalTab } from '@blockcode/code';
 
 import { ArduinoCodeEditor } from './components/code-editor/code-editor';
 import { ArduinoBlocksEditor } from './components/blocks-editor/blocks-editor';
 import { DeviceIcon } from './components/device-menu/device-icon';
 import { DeviceLabel } from './components/device-menu/device-label';
 import { DeviceMenu } from './components/device-menu/device-menu';
+import { SettingsSection } from './components/edit-menu/settings-section';
 import { defaultProject } from './lib/default-project';
 import { ArduinoBoards } from './lib/boards';
 
@@ -33,6 +34,7 @@ export default {
       meta: {
         extensions: Array.from(new Set(extensions.flat())),
         boardType: meta.boardType ?? ArduinoBoards.ArduinoUno,
+        classicEvents: meta.classicEvents ?? false,
       },
     };
   },
@@ -73,6 +75,10 @@ export default {
 
   menuItems: [
     {
+      id: 'edit',
+      Menu: SettingsSection,
+    },
+    {
       icon: <DeviceIcon />,
       label: <DeviceLabel />,
       Menu: DeviceMenu,
@@ -87,6 +93,10 @@ export default {
     {
       ...codeTab,
       Content: ArduinoCodeEditor,
+    },
+    {
+      ...terminalTab,
+      disabled: true,
     },
   ],
 };

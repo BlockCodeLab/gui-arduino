@@ -5,7 +5,7 @@ import featureImage from './feature.png';
 addLocalesMessages({
   en: {
     'arduino.name': 'Arduino',
-    'arduino.description': 'Native Arduino programming via blocks.',
+    'arduino.description': 'Classic Arduino programming via blocks.',
     'arduino.collaborator': 'Arduino',
   },
   'zh-Hans': {
@@ -34,7 +34,7 @@ export default {
   description: (
     <Text
       id="arduino.description"
-      defaultMessage="Native Arduino programming via blocks."
+      defaultMessage="Classic Arduino programming via blocks."
     />
   ),
   collaborator: (
@@ -44,4 +44,5 @@ export default {
     />
   ),
   blocksRequired: true,
+  clangRequired: true,
 };

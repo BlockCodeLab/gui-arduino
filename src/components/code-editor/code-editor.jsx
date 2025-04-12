@@ -2,6 +2,7 @@ import { useEffect, useCallback } from 'preact/hooks';
 import { useSignal } from '@preact/signals';
 import { useAppContext, useProjectContext, setAlert, delAlert, Text } from '@blockcode/core';
 import { CodeEditor } from '@blockcode/code';
+import { getCompletionItems } from '../../lib/get-completion-items';
 
 let modifiedAlertId;
 
@@ -44,5 +45,14 @@ export function ArduinoCodeEditor() {
     };
   }, []);
 
-  return <CodeEditor />;
+  return (
+    <CodeEditor
+      options={{
+        minimap: {
+          enabled: true,
+        },
+      }}
+      onRegisterCompletionItems={getCompletionItems}
+    />
+  );
 }

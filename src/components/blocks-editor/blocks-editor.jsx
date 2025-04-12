@@ -26,10 +26,12 @@ export function ArduinoBlocksEditor() {
 
   const handleResize = useCallback(() => {
     const toolbox = document.querySelector('.blocklyZoom');
-    const transform = toolbox.getAttribute('transform');
-    toolboxStyles.value = {
-      transform: transform.replace(/(\d+)/g, '$1px'),
-    };
+    if (toolbox) {
+      const transform = toolbox.getAttribute('transform');
+      toolboxStyles.value = {
+        transform: transform.replace(/(\d+)/g, '$1px'),
+      };
+    }
   }, []);
 
   const handleCodePreview = useCallback(() => {
@@ -64,8 +66,8 @@ export function ArduinoBlocksEditor() {
       {!appState.value?.hiddenCodePreview && (
         <CodeEditor
           readOnly
-          fontSize={13}
           className={styles.codeEditor}
+          options={{ fontSize: 13 }}
         />
       )}
     </div>

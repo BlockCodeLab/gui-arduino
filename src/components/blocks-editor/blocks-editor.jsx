@@ -14,7 +14,7 @@ const generator = new ArduinoGenerator();
 const handleExtensionsFilter = () => ['arduino'];
 
 export function ArduinoBlocksEditor() {
-  const { appState } = useAppContext();
+  const { appState, tabIndex } = useAppContext();
 
   const { meta } = useProjectContext();
 
@@ -44,6 +44,7 @@ export function ArduinoBlocksEditor() {
       <BlocksEditor
         enableProcedureReturns
         disableSensingBlocks
+        disableGenerateCode={tabIndex.value !== 0}
         variableTypes={VARIABLE_TYPES}
         generator={generator}
         onBuildinExtensions={handleBuildinExtensions}

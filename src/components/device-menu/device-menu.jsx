@@ -93,10 +93,9 @@ const downloadProgram = async (device, content) => {
     hex = await compile(content);
   } catch (err) {
     compileErrorAlert(err.message);
-    return;
   }
   if (!hex) {
-    compileErrorAlert();
+    device.disconnect();
     return;
   }
 
@@ -104,11 +103,12 @@ const downloadProgram = async (device, content) => {
   try {
     await ArduinoUtils.write(device, hex, downloadingAlert);
     await sleepMs(500);
-    device.disconnect();
   } catch (err) {
     console.log(err);
     errorAlert(err.name);
     removeDownloading();
+  } finally {
+    device.disconnect();
   }
 
   // checker.cancel();

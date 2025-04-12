@@ -18,9 +18,7 @@ export async function compile(sketch, fqbn = 'arduino:avr:uno') {
   if (resData?.status?.success && resData?.data?.hex) {
     return atob(resData.data.hex);
   } else {
-    let message = resData?.data?.details ?? 'fatal error: ';
-    message = message.split('\u001b')[0];
-    message = message.split('fatal error:')[1];
+    let message = resData?.data?.details ?? '';
     throw new Error(message.trim());
   }
 }

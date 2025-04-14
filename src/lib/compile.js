@@ -19,6 +19,7 @@ export async function compile(sketch, fqbn = 'arduino:avr:uno') {
     return atob(resData.data.hex);
   } else {
     let message = resData?.data?.details ?? '';
+    // TODO: 正则错误信息，只提取最主要的信息
     throw new Error(message.trim());
   }
 }

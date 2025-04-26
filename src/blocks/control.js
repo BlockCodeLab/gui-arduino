@@ -102,7 +102,7 @@ export default () => ({
         const condition = this.valueToCode(block, 'CONDITION', this.ORDER_NONE) || 'false';
         const branchCode = this.statementToCode(block, 'SUBSTACK');
 
-        // TODO: 处理 elseif 前面没有 if 的错误情况
+        // [TODO] 处理 elseif 前面没有 if 的错误情况
         let code = '';
         code += `else if (${condition}) {\n`;
         code += branchCode;
@@ -118,7 +118,7 @@ export default () => ({
       ino(block) {
         const branchCode = this.statementToCode(block, 'SUBSTACK');
 
-        // TODO: 处理 else 前面没有 if 的错误情况
+        // [TODO] 处理 else 前面没有 if 的错误情况
         let code = '';
         code += `else {\n`;
         code += branchCode;

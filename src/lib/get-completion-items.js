@@ -2,8 +2,8 @@ import { monaco } from '@blockcode/code';
 
 const CompletionItemKind = monaco.languages.CompletionItemKind;
 
-// TODO: 添加补全类型和使用例
-// 格式：[关键词，类型，使用例]
+// [TODO] 添加补全类型和使用例
+// [INFO] [关键词，类型，使用例]
 export const getCompletionItems = () => [
   // 数据类型
   //

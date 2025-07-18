@@ -10,8 +10,6 @@ arduino.menubar.device.downloadBle: Download program via Bluetooth
 arduino.menubar.edit.classicEventsOpen: Turn on Classic Event Blocks
 arduino.menubar.edit.classicEventsClose: Turn off Classic Event Blocks
 
-arduino.alert.manualCoding: "Warning: Manual coding will be reverted when leaving Code tab."
-
 arduino.blocks.classicEventsLabel: Classic events turned on from Edit.
 arduino.blocks.displayMatrix: display %1
 arduino.blocks.clearDisplay: clear display

@@ -10,8 +10,6 @@ arduino.menubar.device.downloadBle: 通过蓝牙下载程序
 arduino.menubar.edit.classicEventsOpen: 打开经典事件积木
 arduino.menubar.edit.classicEventsClose: 关闭经典事件积木
 
-arduino.alert.manualCoding: 警告：手动修改的代码在离开“代码”页后将被还原。
-
 arduino.blocks.classicEventsLabel: 经典事件积木请从“编辑”菜单开启。
 arduino.blocks.displayMatrix: 显示 %1
 arduino.blocks.clearDisplay: 清除显示

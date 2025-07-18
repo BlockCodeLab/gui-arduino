@@ -108,8 +108,8 @@ export default (boardType) => ({
       },
       ino(block) {
         const pin = block.getFieldValue('PIN') || 0;
-        const code = `digitalRead(${pin}) == HIGH\n`;
-        return code;
+        const code = `digitalRead(${pin}) == HIGH`;
+        return [code, this.ORDER_ATOMIC];
       },
     },
     {
@@ -126,8 +126,8 @@ export default (boardType) => ({
       },
       ino(block) {
         const pin = block.getFieldValue('PIN') || 0;
-        const code = `analogRead(${pin})\n`;
-        return code;
+        const code = `analogRead(${pin})`;
+        return [code, this.ORDER_ATOMIC];
       },
     },
     '---',

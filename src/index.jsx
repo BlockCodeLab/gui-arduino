@@ -1,10 +1,10 @@
 import './l10n';
 
 import { svgAsDataUri } from '@blockcode/utils';
-import { ScratchBlocks, blocksTab } from '@blockcode/blocks';
+import { ScratchBlocks, blocksTab, CodeReview } from '@blockcode/blocks';
 import { codeTab, terminalTab } from '@blockcode/code';
+import { getCompletionItems } from './lib/get-completion-items';
 
-import { ArduinoCodeEditor } from './components/code-editor/code-editor';
 import { ArduinoBlocksEditor } from './components/blocks-editor/blocks-editor';
 import { DeviceIcon } from './components/device-menu/device-icon';
 import { DeviceLabel } from './components/device-menu/device-label';
@@ -92,7 +92,7 @@ export default {
     },
     {
       ...codeTab,
-      Content: ArduinoCodeEditor,
+      Content: () => <CodeReview onRegisterCompletionItems={getCompletionItems} />,
     },
     {
       ...terminalTab,

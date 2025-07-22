@@ -39,7 +39,7 @@ export default () => ({
           case 'String':
             break;
         }
-        return code;
+        return [code, this.ORDER_FUNCTION_CALL];
       },
     },
     '---',
@@ -56,8 +56,7 @@ export default () => ({
       },
       ino(block) {
         const data = this.valueToCode(block, 'DATA', this.ORDER_NONE);
-        const code = `strlen(${data})`;
-        return code;
+        return [`strlen(${data})`, this.ORDER_FUNCTION_CALL];
       },
     },
     '---',
@@ -84,8 +83,7 @@ export default () => ({
         const data = this.valueToCode(block, 'DATA', this.ORDER_NONE);
         const from = this.valueToCode(block, 'FROM', this.ORDER_NONE);
         const to = this.valueToCode(block, 'TO', this.ORDER_NONE);
-        const code = `constrain(${data}, ${from}, ${to})`;
-        return code;
+        return [`constrain(${data}, ${from}, ${to})`, this.ORDER_FUNCTION_CALL];
       },
     },
     {
@@ -122,7 +120,7 @@ export default () => ({
         const tolow = this.valueToCode(block, 'TOLOW', this.ORDER_NONE);
         const tohigh = this.valueToCode(block, 'TOHIGHT', this.ORDER_NONE);
         const code = `map(${data}, ${fromlow}, ${fromhigh}, ${tolow}, ${tohigh})`;
-        return code;
+        return [code, this.ORDER_FUNCTION_CALL];
       },
     },
     // 变量积木

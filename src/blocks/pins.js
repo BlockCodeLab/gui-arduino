@@ -88,7 +88,7 @@ export default (boardType) => ({
           min: 0,
           max: 255,
           step: 1,
-          defaultValue: 127,
+          defaultValue: 128,
         },
       },
       ino(block) {

@@ -21,7 +21,6 @@ arduino.blocks.else: 否则
 arduino.blocks.runtime: 运行时长 %1
 arduino.blocks.runtimeMilliseconds: 毫秒
 arduino.blocks.runtimeSeconds: 秒
-arduino.blocks.data: 数据
 arduino.blocks.dataConvert: 将 %1 类型转为 %2
 arduino.blocks.dataLengthOf: "%1 长度"
 arduino.blocks.dataConstrain: 约束 %1 在 %2 和 %3 之间
@@ -51,7 +50,7 @@ arduino.blocks.interruptChange: 电平改变
 arduino.blocks.interruptHigh: 高电平
 arduino.blocks.interruptLow: 低电平
 arduino.blocks.detachinterrupt: 取消引脚 %1 中断
-arduino.blocks.protocols: 通讯协议
+arduino.blocks.protocols: 数据协议
 arduino.blocks.serial: 串口
 arduino.blocks.serialBaudrate: 将波特率设为 %1
 arduino.blocks.serialTimeout: 将超时设为 %1 毫秒

@@ -21,7 +21,6 @@ arduino.blocks.else: else
 arduino.blocks.runtime: run time %1
 arduino.blocks.runtimeMilliseconds: milliseconds
 arduino.blocks.runtimeSeconds: seconds
-arduino.blocks.data: Data
 arduino.blocks.dataConvert: convert %1 to %2
 arduino.blocks.dataLengthOf: length of %1
 arduino.blocks.dataConstrain: constrain %1 between %2 to %3

@@ -353,5 +353,118 @@ export default () => ({
         return [code, this.ORDER_FUNCTION_CALL];
       },
     },
+    '---',
+    {
+      // 类型转换
+      id: 'convert',
+      text: translate('arduino.blocks.dataConvert', 'convert %1 to %2'),
+      output: true,
+      inputs: {
+        DATA: {
+          type: 'string',
+          defaultValue: '3.1415',
+        },
+        TYPE: {
+          menu: ['int', 'float', 'String'],
+        },
+      },
+      ino(block) {
+        const data = this.valueToCode(block, 'DATA', this.ORDER_NONE);
+        const type = block.getFieldValue('TYPE') || 'int';
+        let code = `String(${data})`;
+        switch (type) {
+          case 'int':
+            code += '.toInt()';
+            break;
+          case 'float':
+            code += '.toFloat()';
+            break;
+          case 'String':
+            break;
+        }
+        return [code, this.ORDER_FUNCTION_CALL];
+      },
+    },
+    '---',
+    {
+      // 长度
+      id: 'sizeof',
+      text: translate('arduino.blocks.dataLengthOf', 'length of %1'),
+      output: 'number',
+      inputs: {
+        DATA: {
+          type: 'string',
+          defaultValue: 'arduino',
+        },
+      },
+      ino(block) {
+        const data = this.valueToCode(block, 'DATA', this.ORDER_NONE);
+        return [`strlen(${data})`, this.ORDER_FUNCTION_CALL];
+      },
+    },
+    '---',
+    {
+      // 约束
+      id: 'constrain',
+      text: translate('arduino.blocks.dataConstrain', 'constrain %1 between %2 to %3'),
+      output: 'number',
+      inputs: {
+        DATA: {
+          type: 'integer',
+          defaultValue: 0,
+        },
+        FROM: {
+          type: 'integer',
+          defaultValue: 0,
+        },
+        TO: {
+          type: 'integer',
+          defaultValue: 255,
+        },
+      },
+      ino(block) {
+        const data = this.valueToCode(block, 'DATA', this.ORDER_NONE);
+        const from = this.valueToCode(block, 'FROM', this.ORDER_NONE);
+        const to = this.valueToCode(block, 'TO', this.ORDER_NONE);
+        return [`constrain(${data}, ${from}, ${to})`, this.ORDER_FUNCTION_CALL];
+      },
+    },
+    {
+      // 映射
+      id: 'map',
+      text: translate('arduino.blocks.dataMap', 'map %1 from %2 - %3 to %4 - %5'),
+      output: 'number',
+      inputs: {
+        DATA: {
+          type: 'integer',
+          defaultValue: 0,
+        },
+        FROMLOW: {
+          type: 'integer',
+          defaultValue: 0,
+        },
+        FROMHIGH: {
+          type: 'integer',
+          defaultValue: 1023,
+        },
+        TOLOW: {
+          type: 'integer',
+          defaultValue: 0,
+        },
+        TOHIGHT: {
+          type: 'integer',
+          defaultValue: 255,
+        },
+      },
+      ino(block) {
+        const data = this.valueToCode(block, 'DATA', this.ORDER_NONE);
+        const fromlow = this.valueToCode(block, 'FROMLOW', this.ORDER_NONE);
+        const fromhigh = this.valueToCode(block, 'FROMHIGH', this.ORDER_NONE);
+        const tolow = this.valueToCode(block, 'TOLOW', this.ORDER_NONE);
+        const tohigh = this.valueToCode(block, 'TOHIGHT', this.ORDER_NONE);
+        const code = `map(${data}, ${fromlow}, ${fromhigh}, ${tolow}, ${tohigh})`;
+        return [code, this.ORDER_FUNCTION_CALL];
+      },
+    },
   ],
 });

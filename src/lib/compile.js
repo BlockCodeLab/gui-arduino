@@ -1,12 +1,14 @@
 import { xmlEscape } from '@blockcode/utils';
 
-const COMPILE_URL = 'https://maker.huiwancode.com/api_v1/getarduinocompile/';
+const COMPILE_URL = window.electron
+  ? 'http://localhost:18125/compile'
+  : 'https://maker.huiwancode.com/api_v1/getarduinocompile/';
 
 export async function compile(sketch, fqbn = 'arduino:avr:uno') {
   const params = {
-    sketch,
     fqbn,
-    client: 'blockcode', // [INFO] 这行临时的，目前没有这个功能，可以去掉
+    sketch: window.electron ? btoa(sketch) : sketch,
+    resultType: 'json',
   };
   const data = JSON.stringify({ json: JSON.stringify(params) });
   const res = await fetch(COMPILE_URL, {
@@ -17,12 +19,18 @@ export async function compile(sketch, fqbn = 'arduino:avr:uno') {
     body: data,
   });
   const resData = await res.json();
-  if (resData?.status?.success && resData?.data?.hex) {
+  // arduino-webcli 返回数据格式
+  if (resData?.success && resData?.hex) {
+    return atob(resData.hex);
+  }
+  // huiwancode 返回数据格式
+  else if (resData?.status?.success && resData?.data?.hex) {
     return atob(resData.data.hex);
-  } else {
-    let message = resData?.data?.details ?? '';
-    message = xmlEscape(xmlEscape);
-    // [TODO] 正则错误信息，只提取最主要的信息
+  }
+  // 错误信息处理
+  else {
+    let message = resData?.message ?? resData?.data?.details ?? '';
+    message = xmlEscape(message);
     throw new Error(message.trim());
   }
 }

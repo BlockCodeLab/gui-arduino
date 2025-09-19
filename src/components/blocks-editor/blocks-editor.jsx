@@ -2,6 +2,7 @@ import { useCallback } from 'preact/hooks';
 import { useAppContext, useProjectContext } from '@blockcode/core';
 import { BlocksEditor } from '@blockcode/blocks';
 import { ArduinoGenerator, buildBlocks, VARIABLE_TYPES } from '../../blocks/blocks';
+import { extensionTags } from './extension-tags';
 
 const generator = new ArduinoGenerator();
 
@@ -21,6 +22,7 @@ export function ArduinoBlocksEditor() {
       enableCodePreview
       enableProcedureReturns
       disableSensingBlocks
+      extensionTags={extensionTags}
       disableGenerateCode={tabIndex.value !== 0}
       variableTypes={VARIABLE_TYPES}
       generator={generator}

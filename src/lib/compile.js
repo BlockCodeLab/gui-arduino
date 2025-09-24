@@ -1,13 +1,13 @@
 import { xmlEscape } from '@blockcode/utils';
 
-const COMPILE_URL = window.electron
+const COMPILE_URL = window.electron?.compileOffline
   ? 'http://localhost:18125/compile'
   : 'https://maker.huiwancode.com/api_v1/getarduinocompile/';
 
 export async function compile(sketch, fqbn = 'arduino:avr:uno') {
   const params = {
     fqbn,
-    sketch: window.electron ? btoa(sketch) : sketch,
+    sketch: window.electron?.compileOffline ? btoa(sketch) : sketch,
     resultType: 'json',
   };
   const data = JSON.stringify({ json: JSON.stringify(params) });

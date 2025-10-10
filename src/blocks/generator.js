@@ -30,6 +30,7 @@ export class ArduinoGenerator extends ClangGenerator {
     const defines = [];
     const defvars = [];
     const func_definitions = [];
+    const setups = [];
     for (let name in this.definitions_) {
       const def = this.definitions_[name];
       if (name.match('include')) {
@@ -40,6 +41,8 @@ export class ArduinoGenerator extends ClangGenerator {
         defines.push(def); // #define
       } else if (name.match('variable')) {
         defvars.push(def); // variable
+      } else if (name.match('setup')) {
+        setups.push(def); // setup
       } else {
         func_definitions.push(def); // definition
       }
@@ -58,6 +61,10 @@ export class ArduinoGenerator extends ClangGenerator {
     }
     if (defvars.length > 0) {
       allDefs += defvars.join('\n') + '\n\n';
+    }
+
+    if (setups.length > 0) {
+      this.setup_ = this.INDENT + setups.join(`\n${this.INDENT}`) + `\n${this.setup_}`;
     }
 
     const allFuncs =

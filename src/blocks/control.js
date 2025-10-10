@@ -43,7 +43,8 @@ export default () => ({
         branchCode = this.addLoopTrap(branchCode, block.id);
 
         let code = '';
-        code += `for (int i = 0; i < ${times}; i++) {\n`;
+        const i = this.getLoopName();
+        code += `for (int ${i} = 0; ${i} < ${times}; ${i}++) {\n`;
         code += branchCode;
         code += '}\n';
         return code;

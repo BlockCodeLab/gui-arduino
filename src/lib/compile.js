@@ -1,36 +1,54 @@
-import { xmlEscape } from '@blockcode/utils';
+import { xmlEscape, Base64Utils } from '@blockcode/utils';
+import { ArduinoBoards } from './boards';
 
-const COMPILE_URL = window.electron?.compileOffline
-  ? 'http://localhost:18125/compile'
-  : 'https://maker.huiwancode.com/api_v1/getarduinocompile/';
+const COMPILE_URL = 'https://arduino.blockcode.fun/cli/compile';
 
-export async function compile(sketch, fqbn = 'arduino:avr:uno') {
+const FQBNS = {
+  [ArduinoBoards.ArduinoUno]: 'arduino:avr:uno',
+  [ArduinoBoards.ArduinoNano]: 'arduino:avr:nano',
+  [ArduinoBoards.BLEUNO]: 'arduino:avr:uno',
+  [ArduinoBoards.BLENANO]: 'arduino:avr:nano',
+};
+
+const base64Content = (content) => {
+  if (content instanceof ArrayBuffer) {
+    return Base64Utils.arrayBufferToBase64(content);
+  } else if (content instanceof Uint8Array) {
+    return Base64Utils.arrayBufferToBase64(content.buffer);
+  }
+  return Base64Utils.stringToBase64(content);
+};
+
+export async function compile(boardType, sketch) {
   const params = {
-    fqbn,
-    sketch: window.electron?.compileOffline ? btoa(sketch) : sketch,
+    fqbn: FQBNS[boardType],
+    sketch: sketch.map(({ name, content }) => ({
+      name,
+      content: base64Content(content),
+    })),
     resultType: 'json',
   };
-  const data = JSON.stringify({ json: JSON.stringify(params) });
-  const res = await fetch(COMPILE_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: data,
-  });
-  const resData = await res.json();
-  // arduino-webcli 返回数据格式
-  if (resData?.success && resData?.hex) {
-    return atob(resData.hex);
+  const body = JSON.stringify({ json: JSON.stringify(params) });
+  let data;
+  if (window.electron?.arduinoCompile) {
+    const res = await window.electron?.arduinoCompile(body);
+    data = JSON.parse(res);
+  } else {
+    const res = await fetch(COMPILE_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body,
+    });
+    data = await res.json();
   }
-  // huiwancode 返回数据格式
-  else if (resData?.status?.success && resData?.data?.hex) {
-    return atob(resData.data.hex);
+  // HEX 数据处理
+  if (data?.success && data?.hex) {
+    return atob(data.hex);
   }
   // 错误信息处理
-  else {
-    let message = resData?.message ?? resData?.data?.details ?? '';
-    message = xmlEscape(message);
-    throw new Error(message.trim());
-  }
+  let message = data?.message ?? data?.error ?? '';
+  message = xmlEscape(message);
+  throw new Error(message.trim());
 }

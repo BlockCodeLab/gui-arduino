@@ -85,7 +85,7 @@ export function BoardsSection({ itemClassName }) {
           />
           <Text
             id="arduino.menubar.device.bleuno"
-            defaultMessage="BLE-UNO/NANO"
+            defaultMessage="BLE-UNO"
           />
         </MenuItem>
       </MenuSection>

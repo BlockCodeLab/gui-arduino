@@ -176,3 +176,7 @@ dist
 
 # bun
 bun.lock*
+
+# arduino cli
+/arduino_cli/*
+!/arduino_cli/*.zip

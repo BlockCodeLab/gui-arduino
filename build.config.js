@@ -4,4 +4,7 @@ const srcDir = resolve(import.meta.dir, 'src');
 
 export default {
   entrypoints: [resolve(srcDir, 'index.jsx'), resolve(srcDir, 'info.jsx')],
+  define: {
+    'process.env': JSON.stringify(Bun.env),
+  },
 };

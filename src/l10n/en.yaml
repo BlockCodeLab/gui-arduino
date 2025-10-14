@@ -2,7 +2,7 @@ arduino.menubar.device: Arduino
 arduino.menubar.device.uno: Arduino Uno
 arduino.menubar.device.unoR4: Arduino Uno R4
 arduino.menubar.device.nano: Arduino Nano
-arduino.menubar.device.bleuno: BLE-UNO/NANO
+arduino.menubar.device.bleuno: BLE-UNO
 
 arduino.menubar.device.download: Download program via USB
 arduino.menubar.device.downloadBle: Download program via Bluetooth

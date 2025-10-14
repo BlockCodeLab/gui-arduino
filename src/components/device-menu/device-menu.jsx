@@ -80,17 +80,17 @@ const errorAlert = (err) => {
   setAlert('connectionError', 1000);
 };
 
-const downloadProgram = async (device, content) => {
-  // const checker = ArduinoUtils.check(device).catch(() => {
-  //   errorAlert();
-  //   removeDownloading();
-  // });
+const downloadProgram = async (device, boardType, sketch) => {
+  const checker = ArduinoUtils.check(device).catch(() => {
+    errorAlert();
+    removeDownloading();
+  });
 
   // 编译
   compilingAlert();
   let hex;
   try {
-    hex = await compile(content);
+    hex = await compile(boardType, sketch);
   } catch (err) {
     compileErrorAlert(err.message);
   }
@@ -102,22 +102,41 @@ const downloadProgram = async (device, content) => {
   downloadingAlert(0);
   try {
     await ArduinoUtils.write(device, hex, downloadingAlert);
-    await sleepMs(500);
   } catch (err) {
-    console.log(err);
-    errorAlert(err.name);
-    removeDownloading();
+    // 第二次尝试下载
+    // [WARN] 这里是蓝牙下载固件的BUG
+    try {
+      await ArduinoUtils.write(device, hex, downloadingAlert);
+    } catch (err) {
+      errorAlert(err.name);
+      removeDownloading();
+    }
   } finally {
+    await sleepMs(500);
     device.disconnect();
   }
 
-  // checker.cancel();
+  checker.cancel();
 };
 
 export function DeviceMenu({ itemClassName }) {
-  const { meta, file } = useProjectContext();
+  const { meta, file, assets } = useProjectContext();
 
-  const handleDownload = useCallback(async () => {
+  const downloadToDevice = useCallback((device) =>
+    downloadProgram(
+      device,
+      meta.value.boardType,
+      [].concat(
+        {
+          name: 'main.ino',
+          content: file.value.content,
+        },
+        assets.value.map(({ name, content }) => ({ name, content })),
+      ),
+    ),
+  );
+
+  const handleDownloadUSB = useCallback(async () => {
     if (downloadAlertId) return;
 
     let device;
@@ -127,7 +146,7 @@ export function DeviceMenu({ itemClassName }) {
       errorAlert(err.name);
     }
     if (!device) return;
-    await downloadProgram(device, file.value.content);
+    await downloadToDevice(device);
   }, []);
 
   const handleDownloadBLE = useCallback(async () => {
@@ -140,7 +159,7 @@ export function DeviceMenu({ itemClassName }) {
       errorAlert(err.name);
     }
     if (!device) return;
-    await downloadProgram(device, file.value.content);
+    await downloadToDevice(device);
   }, []);
 
   return (
@@ -169,7 +188,7 @@ export function DeviceMenu({ itemClassName }) {
               defaultMessage="Download program via Serial Port"
             />
           }
-          onClick={handleDownload}
+          onClick={handleDownloadUSB}
         />
       </MenuSection>
 

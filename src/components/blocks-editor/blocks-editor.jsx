@@ -17,6 +17,17 @@ export function ArduinoBlocksEditor() {
     return buildBlocks(meta.value.boardType, meta.value.classicEvents);
   }, [meta.value.boardType, meta.value.classicEvents]);
 
+  const handleDefinitions = useCallback((name, define, resources, index) => {
+    // 导入使用的扩展
+    for (const id in resources) {
+      for (const extModule of resources[id]) {
+        if (extModule.header) {
+          define(`include_${id}_${extModule.name}`, `#include "${extModule.name}"`);
+        }
+      }
+    }
+  }, []);
+
   return (
     <BlocksEditor
       enableCodePreview
@@ -26,6 +37,7 @@ export function ArduinoBlocksEditor() {
       disableGenerateCode={tabIndex.value !== 0}
       variableTypes={VARIABLE_TYPES}
       generator={generator}
+      onDefinitions={handleDefinitions}
       onBuildinExtensions={handleBuildinExtensions}
       onExtensionsFilter={handleExtensionsFilter}
     />

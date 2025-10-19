@@ -80,7 +80,7 @@ export default (boardType) => ({
     {
       // 0-255 滑块
       id: 'slider255',
-      inline: true,
+      shadow: true,
       output: 'number',
       inputs: {
         VALUE: {
@@ -237,7 +237,7 @@ export default (boardType) => ({
     {
       // 8x12点阵灯
       id: 'matrixR4',
-      inline: true,
+      shadow: true,
       output: 'string',
       inputs: {
         MATRIX: {

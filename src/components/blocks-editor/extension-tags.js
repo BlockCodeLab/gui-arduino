@@ -47,6 +47,15 @@ export const extensionTags = [
     ),
   },
   {
+    tag: 'communication',
+    label: (
+      <Text
+        id="arduino.extension.tags.communication"
+        defaultMessage="Communication"
+      />
+    ),
+  },
+  {
     tag: 'kit',
     label: (
       <Text

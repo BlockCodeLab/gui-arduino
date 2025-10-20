@@ -15,6 +15,7 @@ arduino.extension.tags.sensors: Sensors
 arduino.extension.tags.actuators: Actuators
 arduino.extension.tags.displays: Displays
 arduino.extension.tags.modules: Modules
+arduino.extension.tags.communication: Communication
 arduino.extension.tags.kits: Kits
 
 arduino.blocks.classicEventsLabel: Classic events turned on from Edit.

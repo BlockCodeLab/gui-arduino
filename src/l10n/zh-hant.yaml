@@ -10,11 +10,12 @@ arduino.menubar.device.downloadBle: 通過藍牙下載程式
 arduino.menubar.edit.classicEventsOpen: 開啟舊樣式事件積木
 arduino.menubar.edit.classicEventsClose: 關閉舊樣式事件積木
 
-arduino.extension.tags.controllers: 控制器
+arduino.extension.tags.controllers: 輸入模組
 arduino.extension.tags.sensors: 傳感器
 arduino.extension.tags.actuators: 執行器
-arduino.extension.tags.displays: 顯示器
+arduino.extension.tags.displays: 顯示模組
 arduino.extension.tags.modules: 智能模組
+arduino.extension.tags.communication: 通訊
 arduino.extension.tags.kits: 套件
 
 arduino.blocks.classicEventsLabel: 经典事件積木請從「編輯」菜單開啟。
@@ -57,7 +58,7 @@ arduino.blocks.interruptChange: 電平改變
 arduino.blocks.interruptHigh: 高電平
 arduino.blocks.interruptLow: 低電平
 arduino.blocks.detachinterrupt: 取消引腳 %1 中斷
-arduino.blocks.protocol: 數據協議
+arduino.blocks.protocols: 數據協議
 arduino.blocks.serial: 串口
 arduino.blocks.serialBaudrate: 將波特率設為 %1
 arduino.blocks.serialTimeout: 將超時設為 %1 毫秒

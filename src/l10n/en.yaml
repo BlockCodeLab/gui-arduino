@@ -45,12 +45,12 @@ arduino.blocks.setmode: set pin %1 mode to %2
 arduino.blocks.inputMode: input
 arduino.blocks.ouputMode: output
 arduino.blocks.inputPullUpMode: input pull-up
-arduino.blocks.setdigital: set digital pin %1 to %2
+arduino.blocks.setdigital: set pin %1 to %2
 arduino.blocks.digitalHigh: high
 arduino.blocks.digitalLow: low
-arduino.blocks.setanalog: set pwm pin %1 to %2
-arduino.blocks.isDigitalHigh: digital pin %1 is high?
-arduino.blocks.analogValue: analog pin %1
+arduino.blocks.setanalog: set pin %1 pwm to %2
+arduino.blocks.isDigitalHigh: pin %1 is high?
+arduino.blocks.analogValue: pin %1 analog value
 arduino.blocks.attachinterrupt: attach pin %1 interrupt to %2
 arduino.blocks.interruptRising: rising
 arduino.blocks.interruptFalling: falling

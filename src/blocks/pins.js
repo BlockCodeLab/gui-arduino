@@ -15,7 +15,7 @@ export default (boardType) => ({
       text: translate('arduino.blocks.setmode', 'set pin %1 mode to %2'),
       inputs: {
         PIN: {
-          menu: [ArduinoBoards.ArduinoNano, ArduinoBoards.BLEUNO].includes(boardType) ? 'NANO_PINS' : 'UNO_PINS',
+          menu: [ArduinoBoards.ArduinoNano, ArduinoBoards.BLENANO].includes(boardType) ? 'NANO_PINS' : 'UNO_PINS',
         },
         MODE: {
           menu: [
@@ -39,7 +39,7 @@ export default (boardType) => ({
       text: translate('arduino.blocks.setdigital', 'set digital pin %1 to %2'),
       inputs: {
         PIN: {
-          menu: [ArduinoBoards.ArduinoNano, ArduinoBoards.BLEUNO].includes(boardType) ? 'NANO_PINS' : 'UNO_PINS',
+          menu: [ArduinoBoards.ArduinoNano, ArduinoBoards.BLENANO].includes(boardType) ? 'NANO_PINS' : 'UNO_PINS',
         },
         VALUE: {
           inputMode: true,
@@ -103,7 +103,7 @@ export default (boardType) => ({
       output: 'boolean',
       inputs: {
         PIN: {
-          menu: [ArduinoBoards.ArduinoNano, ArduinoBoards.BLEUNO].includes(boardType) ? 'NANO_PINS' : 'UNO_PINS',
+          menu: [ArduinoBoards.ArduinoNano, ArduinoBoards.BLENANO].includes(boardType) ? 'NANO_PINS' : 'UNO_PINS',
         },
       },
       ino(block) {
@@ -115,11 +115,11 @@ export default (boardType) => ({
     {
       // 模拟引脚值
       id: 'analog',
-      text: translate('arduino.blocks.analogValue', 'analog pin %1'),
+      text: translate('arduino.blocks.analogValue', 'pin %1 analog value'),
       output: 'number',
       inputs: {
         PIN: {
-          menu: [ArduinoBoards.ArduinoNano, ArduinoBoards.BLEUNO].includes(boardType)
+          menu: [ArduinoBoards.ArduinoNano, ArduinoBoards.BLENANO].includes(boardType)
             ? 'NANO_ANALOG_PINS'
             : 'UNO_ANALOG_PINS',
         },
@@ -138,7 +138,7 @@ export default (boardType) => ({
       substack: true,
       inputs: {
         PIN: {
-          menu: [ArduinoBoards.ArduinoNano, ArduinoBoards.BLEUNO].includes(boardType) ? 'NANO_PINS' : 'UNO_PINS',
+          menu: [ArduinoBoards.ArduinoNano, ArduinoBoards.BLENANO].includes(boardType) ? 'NANO_PINS' : 'UNO_PINS',
         },
         INTERRUPT: {
           menu: [
@@ -170,7 +170,7 @@ export default (boardType) => ({
       text: translate('arduino.blocks.detachinterrupt', 'detach pin %1 interrupt'),
       inputs: {
         PIN: {
-          menu: [ArduinoBoards.ArduinoNano, ArduinoBoards.BLEUNO].includes(boardType) ? 'NANO_PINS' : 'UNO_PINS',
+          menu: [ArduinoBoards.ArduinoNano, ArduinoBoards.BLENANO].includes(boardType) ? 'NANO_PINS' : 'UNO_PINS',
         },
       },
       ino(block) {
@@ -197,9 +197,7 @@ export default (boardType) => ({
         this.definitions_['variable_matrix_frame'] = 'uint32_t _MATRIX_FRAME_[] = {0x0,0x0,0x0};';
 
         // 在setup函数中加入matrix的初始化
-        if (!this.setup_.includes('_matrix.begin();')) {
-          this.setup_ += this.INDENT + '_matrix.begin();\n';
-        }
+        this.definitions_['setup_matrix'] = '_matrix.begin();';
 
         const matrix = this.valueToCode(block, 'MATRIX', this.ORDER_NONE).split(',');
         let code = '';
@@ -219,12 +217,10 @@ export default (boardType) => ({
         // 引入点整灯头文件并创建全局变量
         this.definitions_['include_Arduino_LED_Matrix'] = '#include "Arduino_LED_Matrix.h"';
         this.definitions_['variable_matrix'] = 'ArduinoLEDMatrix _matrix;';
-        this.definitions_['variable_matrix_frame'] = 'uint32_t _MATRIX_FRAME_[] = {0x0,0x0,0x0}';
+        this.definitions_['variable_matrix_frame'] = 'uint32_t _MATRIX_FRAME_[] = {0x0,0x0,0x0};';
 
         // 在setup函数中加入matrix的初始化
-        if (!this.setup_.includes('_matrix.begin();\n')) {
-          this.setup_ += this.INDENT + '_matrix.begin();\n';
-        }
+        this.definitions_['setup_matrix'] = '_matrix.begin();';
 
         let code = '';
         code += '_MATRIX_FRAME_[0] = 0x0;\n';

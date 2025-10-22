@@ -45,12 +45,12 @@ arduino.blocks.setmode: 將引腳 %1 設為 %2 模式
 arduino.blocks.inputMode: 輸入
 arduino.blocks.ouputMode: 輸出
 arduino.blocks.inputPullUpMode: 上拉輸入
-arduino.blocks.setdigital: 將數字引腳 %1 設為 %2
+arduino.blocks.setdigital: 將引腳 %1 設為 %2
 arduino.blocks.digitalHigh: 高電平
 arduino.blocks.digitalLow: 低電平
-arduino.blocks.setanalog: 將 PWM 引腳 %1 設為 %2
-arduino.blocks.isDigitalHigh: 數字引腳 %1 是高電平？
-arduino.blocks.analogValue: 模擬引腳 %1
+arduino.blocks.setanalog: 將引腳 %1 PWM 值設為 %2
+arduino.blocks.isDigitalHigh: 引腳 %1 是高電平？
+arduino.blocks.analogValue: 引腳 %1 模擬值
 arduino.blocks.attachinterrupt: 將引腳 %1 中斷模式設為 %2
 arduino.blocks.interruptRising: 電平上升
 arduino.blocks.interruptFalling: 電平下降

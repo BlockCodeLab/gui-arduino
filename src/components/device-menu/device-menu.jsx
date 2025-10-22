@@ -76,6 +76,7 @@ const downloadingAlert = (progress) => {
 };
 
 const errorAlert = (err) => {
+  if (!downloadAlertId) return;
   if (err === 'NotFoundError') return;
   setAlert('connectionError', 1000);
 };
@@ -96,6 +97,7 @@ const downloadProgram = async (device, boardType, sketch) => {
   }
   if (!hex) {
     device.disconnect();
+    checker.cancel();
     return;
   }
 
@@ -103,19 +105,22 @@ const downloadProgram = async (device, boardType, sketch) => {
   try {
     await ArduinoUtils.write(device, hex, downloadingAlert);
   } catch (err) {
-    // 第二次尝试下载
-    // [WARN] 这里是蓝牙下载固件的BUG
-    try {
-      await ArduinoUtils.write(device, hex, downloadingAlert);
-    } catch (err) {
-      errorAlert(err.name);
+    if (device.type === 'ble') {
+      // 第二次尝试下载
+      // [WARN] 这里是蓝牙下载固件的BUG
+      try {
+        await ArduinoUtils.write(device, hex, downloadingAlert);
+      } catch (err) {
+        errorAlert();
+        removeDownloading();
+      }
+    } else {
+      errorAlert();
       removeDownloading();
     }
-  } finally {
-    await sleepMs(500);
-    device.disconnect();
   }
 
+  device.disconnect();
   checker.cancel();
 };
 

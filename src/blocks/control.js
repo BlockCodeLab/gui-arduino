@@ -15,7 +15,7 @@ export default () => ({
       inputs: {
         MS: {
           type: 'integer',
-          defaultValue: 500,
+          defaultValue: 1000,
         },
       },
       ino(block) {

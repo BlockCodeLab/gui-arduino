@@ -1,7 +1,7 @@
 {
   "name": "@blockcode/gui-arduino",
   "private": "true",
-  "version": "0.2.0",
+  "version": "0.2.5",
   "type": "module",
   "module": "dist/index.js",
   "exports": {
@@ -16,11 +16,12 @@
     "zip-cli": "bun run ./scripts/zip.js"
   },
   "dependencies": {
-    "@preact/signals": "^2.2.1",
-    "preact": "^10.26.9"
+    "@preact/signals": "^2.3.2",
+    "preact": "^10.27.2"
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "zip-lib": "^1.1.2"
+    "zip-lib": "^1.1.2",
+    "playground-build": "git+https://github.com/BlockCodeLab/playground-build.git"
   }
 }

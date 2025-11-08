@@ -136,7 +136,7 @@ export function DeviceMenu({ itemClassName }) {
           name: 'main.ino',
           content: file.value.content,
         },
-        assets.value.map(({ name, content }) => ({ name, content })),
+        assets.value.map(({ id: name, content }) => ({ name, content })),
       ),
     ),
   );
